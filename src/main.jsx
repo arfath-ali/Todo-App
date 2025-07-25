@@ -15,7 +15,7 @@ import './assets/styles/App.css';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter basename="/todo-app">
+    <BrowserRouter>
       <UserProfileProvider>
         <SignOutProvider>
           <ThemeProvider>
