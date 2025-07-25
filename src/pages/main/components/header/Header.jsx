@@ -80,6 +80,7 @@ const Header = () => {
             className="app-text-medium rounded-[5px] border border-gray-100 px-1 py-1 font-bold text-white hover:cursor-pointer hover:border-gray-100 hover:bg-gray-100 hover:text-black dark:border-gray-100 dark:text-white dark:hover:border-gray-900 dark:hover:bg-gray-900 dark:hover:text-gray-200"
             onClick={(e) => {
               e.preventDefault();
+              e.stopPropagation();
               navigate('/sign-in');
             }}>
             Sign in
