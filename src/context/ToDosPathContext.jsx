@@ -12,10 +12,6 @@ export function ToDosPathProvider({ children }) {
   const [toDos, setToDos] = useState([]);
 
   useEffect(() => {
-    setCurrentPath('all');
-  }, []);
-
-  useEffect(() => {
     const path = location.pathname;
 
     if (path === '/sign-in') {
