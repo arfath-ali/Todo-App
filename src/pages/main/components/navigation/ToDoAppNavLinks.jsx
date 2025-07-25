@@ -6,7 +6,14 @@ const ToDoAppNavLinks = ({ navLinkName }) => {
       <NavLink
         to={`/${navLinkName.toLowerCase()}`}
         style={({ isActive }) =>
-          isActive ? { color: 'var(--color-bright-blue)' } : {}
+          isActive
+            ? {
+                backgroundImage: 'var(--color-gradient-button)',
+                backgroundClip: 'text',
+                WebkitBackgroundClip: 'text',
+                color: 'transparent',
+              }
+            : {}
         }
         className="app-text-medium font-bold">
         {navLinkName}
