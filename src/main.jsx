@@ -1,6 +1,6 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter as Router } from 'react-router-dom';
 
 import { ThemeProvider } from './context/ThemeContext';
 import { ToDosProvider } from './context/ToDosContext';
@@ -15,7 +15,7 @@ import './assets/styles/App.css';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter>
+    <Router>
       <UserProfileProvider>
         <SignOutProvider>
           <ThemeProvider>
@@ -31,6 +31,6 @@ createRoot(document.getElementById('root')).render(
           </ThemeProvider>
         </SignOutProvider>
       </UserProfileProvider>
-    </BrowserRouter>
+    </Router>
   </StrictMode>,
 );
