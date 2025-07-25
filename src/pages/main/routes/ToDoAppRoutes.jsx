@@ -11,7 +11,7 @@ import NotFound from '/src/pages/misc/NotFound';
 const ToDoAppRoutes = ({}) => {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/all" replace />} />
+      <Route path="/todo-app" element={<Navigate to="/all" replace />} />
 
       <Route path="/sign-up" element={<SignUp />} />
 
