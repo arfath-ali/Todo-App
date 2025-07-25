@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:3000',
+  baseURL: 'https://todo-app-backend-w88c.onrender.com',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -25,7 +25,7 @@ axiosInstance.interceptors.response.use(
       ) {
         isRedirecting = true;
         alert('Session expired, please sign in again');
-        window.location.replace('/todo-app/sign-in');
+        window.location.replace('/sign-in');
       }
     }
     return Promise.reject(error);
