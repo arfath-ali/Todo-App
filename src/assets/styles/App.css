@@ -1,0 +1,254 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@font-face {
+    font-family: "Josefin Sans";
+    src: url("../fonts/JosefinSans-Regular.ttf");
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: "Josefin Sans";
+    src: url("../fonts/JosefinSans-Bold.ttf");
+    font-weight: 700;
+}
+
+@theme {
+    /*SCREENS*/
+    --breakpoint-mobile: 23.4375rem;
+    --breakpoint-mobileLarge: 26.5625rem;
+    --breakpoint-tablet: 48rem;
+    --breakpoint-desktop: 90rem;
+
+    /*COLORS*/
+
+    /* Success Color */
+    --color-success: hsl(150, 80%, 40%);
+
+
+    /* Error Color */
+    --color-error: hsl(5, 85%, 55%);
+
+    /* Gradients */
+    --color-gradient-check: linear-gradient(to right, hsl(192, 100%, 67%), hsl(280, 87%, 65%));
+    --color-gradient-button: linear-gradient(to right, hsl(220, 90%, 56%), hsl(280, 87%, 65%));
+    --color-gradient-heading: linear-gradient(to right, hsl(260, 60%, 60%), hsl(290, 70%, 65%));
+    --color-gradient-link: linear-gradient(to right, hsl(200, 70%, 55%), hsl(230, 80%, 60%));
+    --color-gradient-signout: linear-gradient(to right, hsl(0, 85%, 55%), hsl(10, 90%, 50%));
+    --color-gradient-bg-profile: linear-gradient(to bottom right, hsl(210, 60%, 95%), hsl(220, 80%, 90%));
+    --color-gradient-bg-profile-dark: linear-gradient(to bottom right, hsl(210, 20%, 22%), hsl(240, 25%, 18%));
+    --color-gradient-bg-pp-upload-menu: linear-gradient(to right, hsl(220, 10%, 90%), hsl(220, 5%, 80%));
+    --color-gradient-bg-pp-upload-menu-dark: linear-gradient(to right, hsl(220, 10%, 30%), hsl(220, 5%, 20%));
+    --color-gradient-upload: linear-gradient(to right, hsl(210, 80%, 65%), hsl(270, 70%, 70%));
+    --color-gradient-remove: linear-gradient(to right, hsl(15, 70%, 70%), hsl(345, 60%, 65%));
+    --color-gradient-save: linear-gradient(to right, hsl(140, 50%, 55%), hsl(170, 55%, 45%));
+    --color-gradient-cancel: linear-gradient(to right, hsl(0, 70%, 70%), hsl(15, 60%, 60%));
+
+
+    /*TYPOGRAPHY*/
+
+    /*font-family*/
+    --font-josefinSans: "Josefin Sans", sans-serif;
+
+    /*font-weight*/
+    --font-weight-regular: 400;
+    --font-weight-bold: 700;
+
+    /*font-size*/
+    --text-12: 0.75rem;
+    --text-14: 0.875rem;
+    --text-18: 1.125rem;
+    --text-20: 1.25rem;
+    --text-40: 2.5rem;
+
+    /*line-height*/
+    --leading-12: 0.75rem;
+    --leading-14: 0.875rem;
+    --leading-18: 1.125rem;
+    --leading-20: 1.25rem;
+    --leading-40: 2.5rem;
+
+    /*letter-spacing*/
+    --tracking-negative-25: -0.0156rem;
+    --tracking-negative-19: -0.0119rem;
+    --tracking-negative-17: -0.0106rem;
+    --tracking-7.5: 0.4688rem;
+    --tracking-15: 0.9375rem;
+
+    /*BOX-SHADOW*/
+    --shadow-custom-light: 0 2.1875rem 3.125rem -0.9375rem rgba(194, 195, 214, 0.5), 0 0 0 1px rgba(194, 195, 214, 0.15);
+    --shadow-custom-dark: 0 2.1875rem 3.125rem -0.9375rem rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(140, 150, 170, 0.08);
+}
+
+
+@layer base {
+    *::-webkit-scrollbar {
+        display: none
+    }
+
+    * {
+        scrollbar-width: none
+    }
+
+    .body-light-mode::before {
+        content: '';
+        position: absolute;
+        @apply inset-0 z-0;
+        background-repeat: no-repeat;
+        background-position: top center;
+        background-image: url("../images/bg-mobile-light.jpg");
+    }
+
+    .body-dark-mode::before {
+        content: '';
+        position: absolute;
+        @apply inset-0 z-0;
+        background-repeat: no-repeat;
+        background-position: top center;
+        background-image: url("../images/bg-mobile-dark.jpg");
+        background-size: 100% auto;
+    }
+
+    @media (min-width: 426px) {
+        .body-light-mode::before {
+            background-image: url("../images/bg-desktop-light.jpg");
+            background-size: 100% 250px;
+        }
+
+        .body-dark-mode::before {
+            background-image: url("../images/bg-desktop-dark.jpg");
+            background-size: 100% 250px;
+        }
+    }
+
+
+    @media (min-width: 1440px) {
+        .body-light-mode::before {
+            background-image: url("../images/bg-desktop-light.jpg");
+            background-size: 100% auto;
+        }
+
+        .body-dark-mode::before {
+            background-image: url("../images/bg-desktop-dark.jpg");
+            background-size: 100% auto;
+        }
+    }
+
+    .profile-light {
+        background-image: var(--color-gradient-bg-profile);
+    }
+
+    .profile-dark {
+        background-image: var(--color-gradient-bg-profile-dark);
+    }
+}
+
+@layer components {
+
+    .text-gradient-heading {
+        background: var(--color-gradient-heading);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .text-gradient-link {
+        background: var(--color-gradient-link);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+
+    .button-gradient {
+        background-image: var(--color-gradient-button);
+    }
+
+    .signOut-button-gradient,
+    .deleteAccount-button-gradient {
+        background-image: var(--color-gradient-signout);
+    }
+
+    .profile-picture-upload-menu {
+        background-image: var(--color-gradient-bg-pp-upload-menu);
+    }
+
+    .dark .profile-picture-upload-menu {
+        background-image: var(--color-gradient-bg-pp-upload-menu-dark);
+    }
+
+    .upload-button-gradient {
+        background-image: var(--color-gradient-upload);
+    }
+
+    .remove-button-gradient {
+        background-image: var(--color-gradient-remove);
+    }
+
+    .save-button-gradient {
+        background-image: var(--color-gradient-save);
+    }
+
+    .cancel-button-gradient {
+        background-image: var(--color-gradient-cancel);
+    }
+
+    .fullNameEditable,
+    .usernameEditable {
+        position: relative;
+        transition: border-color 0.3s ease;
+    }
+
+    .fullNameEditable.active,
+    .usernameEditable.active {
+        border-color: transparent;
+    }
+
+    .fullNameEditable::before,
+    .usernameEditable::before {
+        position: absolute;
+        content: '';
+        bottom: -1px;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        border-bottom: 0;
+        background-image: var(--color-gradient-button);
+        transform-origin: center;
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+    }
+
+    .fullNameEditable.active::before,
+    .usernameEditable.active::before {
+
+        transform: scaleX(1);
+    }
+
+    .dragging {
+        opacity: 0.5;
+        scale: 0.98;
+    }
+}
+
+@layer utilities {
+    .legend-base {
+        @apply ml-3 font-bold;
+    }
+
+    .app-text-large {
+        @apply text-20 leading-20 tracking-7.5 font-bold desktop:text-40 desktop:leading-40 desktop:tracking-15;
+    }
+
+    .app-text-large-tight {
+        @apply text-20 desktop:text-40 desktop:leading-40 tracking-negative-17 leading-20
+    }
+
+    .app-text-medium {
+        @apply text-14 leading-14 tracking-negative-17 desktop:text-18 desktop:leading-18 desktop:tracking-negative-25;
+    }
+
+    .app-text-small {
+        @apply text-12 tracking-negative-19 desktop:text-14 desktop:tracking-negative-25 desktop:leading-14 leading-12
+    }
+}
