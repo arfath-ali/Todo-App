@@ -1,30 +1,25 @@
 import { Suspense, lazy } from 'react';
 import { useTheme } from '/src/context/ThemeContext';
-import { useToDos } from '/src/context/ToDosContext';
 import { useToDosPath } from '/src/context/ToDosPathContext';
+import { useUserProfile } from '/src/context/UserProfileContext';
 import { useWindowSize } from '/src/hooks/useWindowSize';
 
 const WelcomeHeader = lazy(() => import('./components/header/WelcomeHeader'));
 const Header = lazy(() => import('./components/header/Header'));
-const ToDoAppNavigation = lazy(
-  () => import('./components/navigation/ToDoAppNavigation'),
-);
 const ToDoInput = lazy(() => import('./components/todo-controls/ToDoInput'));
-const ToDosCount = lazy(() => import('./components/todo-controls/ToDosCount'));
-const ClearCompletedButton = lazy(
-  () => import('./components/todo-controls/ClearCompletedButton'),
+const DesktopToDoUtilityBar = lazy(
+  () => import('./components/todo-controls/DesktopToDoUtilityBar.jsx'),
 );
-const CustomSpinner = lazy(
-  () => import('./components/todo-controls/CustomSpinner.jsx'),
-);
-
 const ToDoAppRoutes = lazy(() => import('./routes/ToDoAppRoutes'));
+const MobileToDoUtilityBar = lazy(
+  () => import('./components/todo-controls/MobileToDoUtilityBar.jsx'),
+);
 
 const ToDoAppPage = () => {
   const windowWidth = useWindowSize();
   const { theme } = useTheme();
-  const { isFetchingToDos } = useToDos();
-  const { currentPath, toDos } = useToDosPath();
+  const { currentPath } = useToDosPath();
+  const { isSignedIn } = useUserProfile();
 
   const isAuthPage = currentPath === 'sign-in' || currentPath === 'sign-up';
   const isToDoPage =
@@ -59,7 +54,7 @@ const ToDoAppPage = () => {
             theme === 'dark' ? 'body-dark-mode' : 'body-light-mode'
           } tablet:max-w-none mobile:max-w-[48rem] relative mx-auto h-screen max-w-[20rem] min-w-[20rem] overflow-hidden pr-6 pb-10 pl-[1.625rem]`}>
           <Suspense fallback={null}>
-            <Header />
+            <Header windowWidth={windowWidth} />
           </Suspense>
 
           <main className="desktop:max-w-[33.75rem] relative z-10 mx-auto max-w-[30rem]">
@@ -68,36 +63,15 @@ const ToDoAppPage = () => {
             </Suspense>
 
             {windowWidth >= 768 && (
-              <div
-                className={`flex items-center justify-between rounded-[5px] bg-gray-50 py-4 pr-5 pl-6 dark:bg-gray-900 ${
-                  currentPath === 'all' ? 'mt-4' : 'mt-[4.375rem]'
-                }`}>
-                {isFetchingToDos ? (
-                  <>
-                    <CustomSpinner />
-                  </>
-                ) : (
-                  <>
-                    <Suspense fallback={null}>
-                      <ToDosCount toDos={toDos} />
-                    </Suspense>
-
-                    <div className="text-dark-grayish-blue-alt flex max-w-[33.75rem] items-center justify-center rounded-[5px]">
-                      <Suspense fallback={null}>
-                        <ToDoAppNavigation />
-                      </Suspense>
-                    </div>
-
-                    <Suspense fallback={null}>
-                      <ClearCompletedButton windowWidth={windowWidth} />
-                    </Suspense>
-                  </>
-                )}
+              <div>
+                <Suspense fallback={null}>
+                  <DesktopToDoUtilityBar windowWidth={windowWidth} />
+                </Suspense>
               </div>
             )}
 
             <div
-              className={`shadow-custom-light dark:shadow-custom-dark overflow-y-scroll rounded-[5px] ${
+              className={`${isSignedIn ? 'shadow-custom-light dark:shadow-custom-dark' : ''} overflow-y-scroll rounded-[5px] ${
                 windowWidth < 375
                   ? currentPath === 'all'
                     ? 'mt-2'
@@ -112,32 +86,14 @@ const ToDoAppPage = () => {
             </div>
 
             {windowWidth < 768 && (
-              <>
-                <div className="mt-2 flex items-center justify-between rounded-[5px] bg-gray-50 px-5 py-4 dark:bg-gray-900">
-                  {isFetchingToDos ? (
-                    <div className="flex w-full justify-center">
-                      <CustomSpinner />
-                    </div>
-                  ) : (
-                    <Suspense fallback={null}>
-                      <ToDosCount toDos={toDos} />
-                      <ClearCompletedButton windowWidth={windowWidth} />
-                    </Suspense>
-                  )}
-                </div>
-
-                <div
-                  className="fixed bottom-0 left-1/2 flex w-full -translate-x-1/2 transform items-center justify-center"
-                  style={{
-                    paddingBottom: 'calc(16px + env(safe-area-inset-bottom))',
-                  }}>
-                  <Suspense fallback={null}>
-                    <ToDoAppNavigation />
-                  </Suspense>
-                </div>
-              </>
+              <div>
+                <Suspense fallback={null}>
+                  <MobileToDoUtilityBar windowWidth={windowWidth} />
+                </Suspense>
+              </div>
             )}
           </main>
+
           <footer></footer>
         </div>
       )}

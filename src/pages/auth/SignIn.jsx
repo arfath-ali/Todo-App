@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { ClipLoader } from 'react-spinners';
 
+import GoogleSpinner from './components/GoogleSpinner';
+
 import { useUserProfile } from '/src/context/UserProfileContext';
 import { useTheme } from '/src/context/ThemeContext';
 
@@ -30,6 +32,7 @@ const SignIn = () => {
   const [password, setPassword] = useState('');
   const [signInError, setSignInError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isGoogleSignInLoading, setIsGoogleSignInLoading] = useState(false);
   const [displayPassword, setDisplayPassword] = useState(false);
 
   const navigate = useNavigate();
@@ -88,7 +91,7 @@ const SignIn = () => {
 
   const handleGoogleSignIn = async () => {
     try {
-      setIsLoading(true);
+      setIsGoogleSignInLoading(true);
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
       const token = await user.getIdToken();
@@ -106,7 +109,7 @@ const SignIn = () => {
       console.error('Google sign-in error:', error);
       setSignInError('Google sign-in failed. Please try again.');
     } finally {
-      setIsLoading(false);
+      setIsGoogleSignInLoading(false);
     }
   };
 
@@ -199,11 +202,17 @@ const SignIn = () => {
           onClick={handleGoogleSignIn}
           className="darkborder-gray-300 flex w-full cursor-pointer items-center justify-center gap-3 rounded-[5px] border border-black py-3.5 hover:bg-gray-100 dark:border-gray-700 dark:hover:bg-gray-700"
           type="button">
-          <img src={googleIcon} alt="Google logo" className="mb-1 h-5 w-5" />
-          {isLoading ? (
-            <ClipLoader color="#fff" size={24} />
+          {isGoogleSignInLoading ? (
+            <GoogleSpinner />
           ) : (
-            'Sign in with Google'
+            <>
+              <img
+                src={googleIcon}
+                alt="Google logo"
+                className="mb-1 h-5 w-5"
+              />
+              Sign in with Google
+            </>
           )}
         </button>
       </div>

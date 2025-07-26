@@ -10,7 +10,7 @@ import axiosInstance from '/src/services/api.js';
 const ToDoInput = ({ windowWidth }) => {
   const { allToDos, setUpdatedToDos } = useToDos();
   const { currentPath } = useToDosPath();
-  const { userProfile, isSignedIn } = useUserProfile();
+  const { userProfile, isSignedIn, isUserProfileLoading } = useUserProfile();
   const email = userProfile?.email;
   const [input, setInput] = useState('');
 

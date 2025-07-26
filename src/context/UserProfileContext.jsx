@@ -6,6 +6,7 @@ const UserProfileContext = createContext();
 export function UserProfileProvider({ children }) {
   const [userProfile, setUserProfile] = useState(null);
   const [isSignedIn, setIsSignedIn] = useState(false);
+  const [isUserProfileLoading, setIsUserProfileLoading] = useState(true);
 
   const fetchUserProfile = async () => {
     try {
@@ -17,6 +18,7 @@ export function UserProfileProvider({ children }) {
   };
 
   const loadUserProfile = async () => {
+    setIsUserProfileLoading(true);
     try {
       const data = await fetchUserProfile();
 
@@ -26,12 +28,14 @@ export function UserProfileProvider({ children }) {
         sessionStorage.setItem('wasSignedIn', 'true');
       } else {
         setUserProfile(null);
-        setIsSignedIn(false);
+        setIsSignedIn(true);
         sessionStorage.removeItem('wasSignedIn');
       }
     } catch (err) {
       setUserProfile(null);
       setIsSignedIn(false);
+    } finally {
+      setIsUserProfileLoading(false);
     }
   };
 
@@ -50,6 +54,7 @@ export function UserProfileProvider({ children }) {
         userProfile,
         isSignedIn,
         loadUserProfile,
+        isUserProfileLoading,
         clearUserProfile,
       }}>
       {children}

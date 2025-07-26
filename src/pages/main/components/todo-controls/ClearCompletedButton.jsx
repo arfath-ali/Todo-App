@@ -27,7 +27,7 @@ const ClearCompletedButton = ({ windowWidth }) => {
     <button
       className={`button-gradient dark:text-black ${currentPath === 'active' || completedToDos.length === 0 ? 'invisible' : 'block'} text-very-dark-blue app-text-medium rounded-[5px] p-1.5 font-bold hover:cursor-pointer`}
       onClick={clearCompletedTasks}>
-      {windowWidth < 375 ? 'Clear' : 'Clear Completed'}
+      {windowWidth < 1440 ? 'Clear' : 'Clear Completed'}
     </button>
   );
 };

@@ -1,0 +1,37 @@
+import { useToDos } from '/src/context/ToDosContext';
+import { useToDosPath } from '/src/context/ToDosPathContext';
+
+import ToDosCount from './ToDosCount';
+import ClearCompletedButton from './ClearCompletedButton';
+import ToDoAppNavigation from '../navigation/ToDoAppNavigation';
+import CustomSpinner from './CustomSpinner.jsx';
+
+const DesktopToDoUtilityBar = ({ windowWidth }) => {
+  const { isFetchingToDos } = useToDos();
+  const { currentPath, toDos } = useToDosPath();
+
+  return (
+    <div
+      className={`flex items-center ${isFetchingToDos ? 'justify-center' : 'justify-between'} } rounded-[5px] bg-gray-50 py-4 pr-5 pl-6 dark:bg-gray-900 ${
+        currentPath === 'all' ? 'mt-4' : 'mt-[4.375rem]'
+      }`}>
+      {isFetchingToDos ? (
+        <>
+          <CustomSpinner />
+        </>
+      ) : (
+        <>
+          <ToDosCount toDos={toDos} />
+
+          <div className="flex max-w-[33.75rem] items-center justify-center rounded-[5px]">
+            <ToDoAppNavigation />
+          </div>
+
+          <ClearCompletedButton windowWidth={windowWidth} />
+        </>
+      )}
+    </div>
+  );
+};
+
+export default DesktopToDoUtilityBar;

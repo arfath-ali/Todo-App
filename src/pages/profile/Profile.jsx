@@ -11,6 +11,8 @@ import { useSignOut } from '/src/context/SignOutContext';
 import { useWindowSize } from '/src/hooks/useWindowSize.js';
 import useClearUserData from '/src/hooks/useClearUserData';
 
+import CustomSpinner from './components/CustomSpinner';
+
 import signOut from '/src/utils/signOut.js';
 
 import axiosInstance from '/src/services/api.js';
@@ -35,7 +37,8 @@ const Profile = () => {
 
   const { theme } = useTheme();
   const { isSignedOut, setIsSignedOut } = useSignOut();
-  const { userProfile, loadUserProfile } = useUserProfile();
+  const { userProfile, loadUserProfile, isUserProfileLoading } =
+    useUserProfile();
   const [intialFullName, setIntialFullName] = useState('');
   const [fullName, setFullName] = useState('');
   const [fullNameChanged, setFullNameChanged] = useState(false);
@@ -313,252 +316,261 @@ const Profile = () => {
 
   return (
     <div className="app-text-medium relative bg-gray-300 dark:bg-gray-800">
-      <div className="mx-auto flex h-screen max-w-[300px] flex-col items-center justify-center">
-        <div className="relative flex w-full flex-col items-center justify-center gap-5">
-          <div className="flex w-full justify-center">
-            <div
-              className={`relative h-32 w-32 ${isEditable ? 'cursor-pointer' : ''} overflow-hidden rounded-full`}>
-              <img
-                src={
-                  !isProfilePictureUploadMenu &&
-                  profileImageChanged &&
-                  previewImage
-                    ? previewImage
-                    : profilePictureURL
-                }
-                className="h-full"
-                alt="Profile Picture"
-                onMouseEnter={() => setIsProfilePictureHovered(true)}
-                onMouseLeave={() => setIsProfilePictureHovered(false)}
-                onClick={() => {
-                  if (isEditable) setIsProfilePictureUploadMenu(true);
-                }}
-              />
-              {profileImageChanged && isLoading && (
-                <div className="pointer-events-none absolute inset-0 flex h-full w-full items-center justify-center bg-black opacity-60">
-                  <ClipLoader color="#fff" size={24} />
-                </div>
-              )}
-              {isEditable && isProfilePictureHovered && (
-                <div className="pointer-events-none absolute bottom-0 flex h-[35%] w-full items-center justify-center rounded-b-full bg-black opacity-60">
-                  <img src={CameraIcon} className="h-6 w-6" />
-                </div>
-              )}
+      {isUserProfileLoading ? (
+        <div className="flex h-screen w-full items-center justify-center">
+          <CustomSpinner />{' '}
+        </div>
+      ) : (
+        <div className="mx-auto flex h-screen max-w-[300px] flex-col items-center justify-center">
+          <div className="relative flex w-full flex-col items-center justify-center gap-5">
+            <div className="flex w-full justify-center">
+              <div
+                className={`relative h-32 w-32 ${isEditable ? 'cursor-pointer' : ''} overflow-hidden rounded-full`}>
+                <img
+                  src={
+                    !isProfilePictureUploadMenu &&
+                    profileImageChanged &&
+                    previewImage
+                      ? previewImage
+                      : profilePictureURL
+                  }
+                  className="h-full"
+                  alt="Profile Picture"
+                  onMouseEnter={() => setIsProfilePictureHovered(true)}
+                  onMouseLeave={() => setIsProfilePictureHovered(false)}
+                  onClick={() => {
+                    if (isEditable) setIsProfilePictureUploadMenu(true);
+                  }}
+                />
+                {profileImageChanged && isLoading && (
+                  <div className="pointer-events-none absolute inset-0 flex h-full w-full items-center justify-center bg-black opacity-60">
+                    <ClipLoader color="#fff" size={24} />
+                  </div>
+                )}
+                {isEditable && isProfilePictureHovered && (
+                  <div className="pointer-events-none absolute bottom-0 flex h-[35%] w-full items-center justify-center rounded-b-full bg-black opacity-60">
+                    <img src={CameraIcon} className="h-6 w-6" />
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
 
-          {hasChanges && isUsernameAvailable && (
-            <div className="text-success desktop:mb-2 absolute top-[-25px] bottom-[100%] mx-auto w-full text-center">
-              <p>{usernameStatus}</p>
-            </div>
-          )}
-          {hasChanges && !isUsernameAvailable && (
-            <div className="text-error desktop:mb-2 absolute top-[-25px] bottom-[100%] mx-auto w-full text-center">
-              <p>{usernameStatus}</p>
-            </div>
-          )}
-
-          {updateStatus && changesSaved ? (
-            <div className="text-success desktop:mb-2 absolute top-[-25px] bottom-[100%] mx-auto w-full text-center">
-              <p>{updateStatus}</p>
-            </div>
-          ) : (
-            updateStatus && (
+            {hasChanges && isUsernameAvailable && (
+              <div className="text-success desktop:mb-2 absolute top-[-25px] bottom-[100%] mx-auto w-full text-center">
+                <p>{usernameStatus}</p>
+              </div>
+            )}
+            {hasChanges && !isUsernameAvailable && (
               <div className="text-error desktop:mb-2 absolute top-[-25px] bottom-[100%] mx-auto w-full text-center">
+                <p>{usernameStatus}</p>
+              </div>
+            )}
+
+            {updateStatus && changesSaved ? (
+              <div className="text-success desktop:mb-2 absolute top-[-25px] bottom-[100%] mx-auto w-full text-center">
                 <p>{updateStatus}</p>
               </div>
-            )
-          )}
-
-          <div className="flex w-full flex-col gap-2">
-            <label className="app-text-small font-bold dark:text-white">
-              Name:
-            </label>
-
-            <div
-              onClick={() => {
-                if (isEditable) setIsFullNameEditable(true);
-              }}
-              className={`fullNameEditable ${isFullNameEditable ? 'active' : ''} flex items-center justify-between border-b-1 dark:border-gray-700`}>
-              <input
-                ref={fullNameRef}
-                type="text"
-                onChange={(e) => setFullName(e.target.value)}
-                value={fullName}
-                className={`${isEditable ? 'cursor-text' : 'cursor-default'} outline-none`}
-                readOnly={!isFullNameEditable}
-                onBlur={() => setIsFullNameEditable(false)}
-              />
-              {isEditable && !isFullNameEditable && (
-                <img src={EditIconDark} className="mr-3 h-3 w-3" />
-              )}
-            </div>
-          </div>
-
-          <div className="flex w-full flex-col gap-2">
-            <label className="app-text-small font-bold dark:text-white">
-              Username:
-            </label>
-
-            <div
-              onClick={() => {
-                if (isEditable) setIsUsernameEditable(true);
-              }}
-              className={`usernameEditable ${isUsernameEditable ? 'active border-b-1' : ''} relative flex items-center justify-between border-b-1 dark:border-gray-700`}>
-              <input
-                ref={usernameRef}
-                name="username"
-                autoComplete="off"
-                type="text"
-                onFocus={() => setIsUsernameFieldFocused(true)}
-                onChange={(e) => setProfileUsername(e.target.value)}
-                onBlur={() => handleUsernameBlur()}
-                value={profileUsername}
-                readOnly={!isUsernameEditable}
-                onKeyDown={(e) => {
-                  if (e.key === ' ') e.preventDefault();
-                }}
-                maxLength={15}
-                className={`${isEditable ? 'cursor-text' : 'cursor-default'} outline-none`}
-              />
-
-              {isEditable && !isUsernameEditable && !isUsernameAvailable && (
-                <img src={EditIconDark} className="mr-3 h-3 w-3" />
-              )}
-
-              {isSearchingUsername && (
-                <ClipLoader
-                  color="hsl(220, 90%, 56%)"
-                  size={15}
-                  className="mr-3"
-                />
-              )}
-
-              {isUsernameAvailable && (
-                <img src={successIcon} className="mr-3 h-[15px] w-[15px]" />
-              )}
-            </div>
-            {isEditable &&
-              globalUsername &&
-              !isUsernameValid &&
-              !isUsernameFieldFocused &&
-              !isNonUsernameFieldsEditable &&
-              !isCancelButtonClicked && (
-                <div
-                  className={`${windowWidth >= 1440 ? 'absolute' : ''} right-[-320px] bottom-0`}>
-                  <p className="text-error max-w-[300px]">
-                    Username must be at least 3 characters long, start with a
-                    lowercase letter or underscore(_), include at least one
-                    number, use only lowercase letters, numbers, dots(.), or
-                    underscores(_), and not end with a dot(.).
-                  </p>
+            ) : (
+              updateStatus && (
+                <div className="text-error desktop:mb-2 absolute top-[-25px] bottom-[100%] mx-auto w-full text-center">
+                  <p>{updateStatus}</p>
                 </div>
-              )}
+              )
+            )}
+
+            <div className="flex w-full flex-col gap-2">
+              <label className="app-text-small font-bold dark:text-white">
+                Name:
+              </label>
+
+              <div
+                onClick={() => {
+                  if (isEditable) setIsFullNameEditable(true);
+                }}
+                className={`fullNameEditable ${isFullNameEditable ? 'active' : ''} flex items-center justify-between border-b-1 dark:border-gray-700`}>
+                <input
+                  ref={fullNameRef}
+                  type="text"
+                  onChange={(e) => setFullName(e.target.value)}
+                  value={fullName}
+                  className={`${isEditable ? 'cursor-text' : 'cursor-default'} outline-none`}
+                  readOnly={!isFullNameEditable}
+                  onBlur={() => setIsFullNameEditable(false)}
+                />
+                {isEditable && !isFullNameEditable && (
+                  <img src={EditIconDark} className="mr-3 h-3 w-3" />
+                )}
+              </div>
+            </div>
+
+            <div className="flex w-full flex-col gap-2">
+              <label className="app-text-small font-bold dark:text-white">
+                Username:
+              </label>
+
+              <div
+                onClick={() => {
+                  if (isEditable) setIsUsernameEditable(true);
+                }}
+                className={`usernameEditable ${isUsernameEditable ? 'active border-b-1' : ''} relative flex items-center justify-between border-b-1 dark:border-gray-700`}>
+                <input
+                  ref={usernameRef}
+                  name="username"
+                  autoComplete="off"
+                  type="text"
+                  onFocus={() => setIsUsernameFieldFocused(true)}
+                  onChange={(e) => setProfileUsername(e.target.value)}
+                  onBlur={() => handleUsernameBlur()}
+                  value={profileUsername}
+                  readOnly={!isUsernameEditable}
+                  onKeyDown={(e) => {
+                    if (e.key === ' ') e.preventDefault();
+                  }}
+                  maxLength={15}
+                  className={`${isEditable ? 'cursor-text' : 'cursor-default'} outline-none`}
+                />
+
+                {isEditable && !isUsernameEditable && !isUsernameAvailable && (
+                  <img src={EditIconDark} className="mr-3 h-3 w-3" />
+                )}
+
+                {isSearchingUsername && (
+                  <ClipLoader
+                    color="hsl(220, 90%, 56%)"
+                    size={15}
+                    className="mr-3"
+                  />
+                )}
+
+                {isUsernameAvailable && (
+                  <img src={successIcon} className="mr-3 h-[15px] w-[15px]" />
+                )}
+              </div>
+              {isEditable &&
+                globalUsername &&
+                !isUsernameValid &&
+                !isUsernameFieldFocused &&
+                !isNonUsernameFieldsEditable &&
+                !isCancelButtonClicked && (
+                  <div
+                    className={`${windowWidth >= 1440 ? 'absolute' : ''} right-[-320px] bottom-0`}>
+                    <p className="text-error max-w-[300px]">
+                      Username must be at least 3 characters long, start with a
+                      lowercase letter or underscore(_), include at least one
+                      number, use only lowercase letters, numbers, dots(.), or
+                      underscores(_), and not end with a dot(.).
+                    </p>
+                  </div>
+                )}
+            </div>
+
+            <div className="flex w-full flex-col gap-2">
+              <label className="app-text-small font-bold dark:text-white">
+                Email:
+              </label>
+
+              <input
+                type="text"
+                value={email}
+                className="border-b-1 outline-none dark:border-gray-700"
+                disabled
+              />
+            </div>
+
+            {!isEditable && (
+              <div
+                onClick={() => handleEditProfileButton()}
+                className={`absolute top-0 cursor-pointer ${windowWidth > 1440 ? 'right-[-100px]' : 'right-[-30px]'} rounded-[100px] p-[2px]`}
+                style={{ background: 'var(--color-gradient-button)' }}>
+                {windowWidth > 1440 ? (
+                  <button className="flex cursor-pointer justify-center gap-2 rounded-[100px] bg-gray-300 px-2 pt-3 pb-2 font-bold hover:bg-gray-400 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700">
+                    Edit Profile
+                    <img
+                      src={theme === 'dark' ? EditIconDark : EditIconLight}
+                      className="h-3 w-3"
+                      alt=""
+                    />
+                  </button>
+                ) : (
+                  <button className="flex cursor-pointer justify-center gap-2 rounded-[100px] bg-white px-3 pt-2 pb-1 font-bold text-white dark:bg-gray-700">
+                    Edit
+                    <img
+                      src={theme === 'dark' ? EditIconDark : EditIconLight}
+                      className="h-2 w-2"
+                      alt=""
+                    />
+                  </button>
+                )}
+              </div>
+            )}
           </div>
 
-          <div className="flex w-full flex-col gap-2">
-            <label className="app-text-small font-bold dark:text-white">
-              Email:
-            </label>
+          {isEditable ? (
+            <div className="mt-10 flex w-full items-center justify-between gap-4 dark:text-black">
+              <button
+                className="cancel-button-gradient flex-1 cursor-pointer rounded-[5px] py-3"
+                onClick={() => {
+                  handleCancelButton();
+                }}>
+                Cancel
+              </button>
+              <button
+                className={`save-button-gradient desktop:max-h-[42px] max-h-[38px] flex-1 cursor-pointer rounded-[5px] py-3 ${hasChanges && (!usernameChanged || (profileUsername && isUsernameAvailable)) && (!fullNameChanged || fullName) ? '' : 'opacity-20'}`}
+                onClick={() => {
+                  setIsLoading(true);
 
-            <input
-              type="text"
-              value={email}
-              className="border-b-1 outline-none dark:border-gray-700"
-              disabled
-            />
-          </div>
+                  setTimeout(() => {
+                    handleSaveChangesButton();
+                  }, 1000);
+                }}>
+                {isLoading ? (
+                  <ClipLoader color="#fff" size={22} />
+                ) : (
+                  'Save Changes'
+                )}
+              </button>
+            </div>
+          ) : (
+            <div className="w-full">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsSignedOut(true);
+                  setTimeout(() => {
+                    signOut(navigate, clearAllUserData);
+                    setIsSignedOut(false);
+                  }, 1000);
+                }}
+                className="signOut-button-gradient mt-10 flex w-full cursor-pointer items-center justify-center gap-2.5 rounded-[5px] py-4 font-bold dark:text-black">
+                {isSignedOut ? (
+                  <ClipLoader color="#fff" size={24} />
+                ) : (
+                  'Sign Out'
+                )}
 
-          {!isEditable && (
-            <div
-              onClick={() => handleEditProfileButton()}
-              className={`absolute top-0 cursor-pointer ${windowWidth > 1440 ? 'right-[-100px]' : 'right-[-30px]'} rounded-[100px] p-[2px]`}
-              style={{ background: 'var(--color-gradient-button)' }}>
-              {windowWidth > 1440 ? (
-                <button className="flex cursor-pointer justify-center gap-2 rounded-[100px] bg-gray-300 px-2 pt-3 pb-2 font-bold hover:bg-gray-400 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700">
-                  Edit Profile
+                {!isSignedOut && (
                   <img
-                    src={theme === 'dark' ? EditIconDark : EditIconLight}
-                    className="h-3 w-3"
-                    alt=""
+                    src={SignOutIcon}
+                    className="hover-cursor-pointer h-5 w-5"
                   />
-                </button>
-              ) : (
-                <button className="flex cursor-pointer justify-center gap-2 rounded-[100px] bg-white px-3 pt-2 pb-1 font-bold text-white dark:bg-gray-700">
-                  Edit
-                  <img
-                    src={theme === 'dark' ? EditIconDark : EditIconLight}
-                    className="h-2 w-2"
-                    alt=""
-                  />
-                </button>
-              )}
+                )}
+              </button>
+
+              <button
+                onClick={() => {
+                  setDeleteConfirmation(true);
+                }}
+                className="deleteAccount-button-gradient mt-4 flex w-full cursor-pointer items-center justify-center gap-2.5 rounded-[5px] py-3.5 font-bold dark:text-black">
+                <img
+                  src={BinIcon}
+                  className="hover-cursor-pointer mb-1 h-5 w-5"
+                />
+                Delete Account
+              </button>
             </div>
           )}
         </div>
-
-        {isEditable ? (
-          <div className="mt-10 flex w-full items-center justify-between gap-4 dark:text-black">
-            <button
-              className="cancel-button-gradient flex-1 cursor-pointer rounded-[5px] py-3"
-              onClick={() => {
-                handleCancelButton();
-              }}>
-              Cancel
-            </button>
-            <button
-              className={`save-button-gradient desktop:max-h-[42px] max-h-[38px] flex-1 cursor-pointer rounded-[5px] py-3 ${hasChanges && (!usernameChanged || (profileUsername && isUsernameAvailable)) && (!fullNameChanged || fullName) ? '' : 'opacity-20'}`}
-              onClick={() => {
-                setIsLoading(true);
-
-                setTimeout(() => {
-                  handleSaveChangesButton();
-                }, 1000);
-              }}>
-              {isLoading ? (
-                <ClipLoader color="#fff" size={22} />
-              ) : (
-                'Save Changes'
-              )}
-            </button>
-          </div>
-        ) : (
-          <div className="w-full">
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsSignedOut(true);
-                setTimeout(() => {
-                  signOut(navigate, clearAllUserData);
-                  setIsSignedOut(false);
-                }, 1000);
-              }}
-              className="signOut-button-gradient mt-10 flex w-full cursor-pointer items-center justify-center gap-2.5 rounded-[5px] py-4 font-bold dark:text-black">
-              {isSignedOut ? <ClipLoader color="#fff" size={24} /> : 'Sign Out'}
-
-              {!isSignedOut && (
-                <img
-                  src={SignOutIcon}
-                  className="hover-cursor-pointer h-5 w-5"
-                />
-              )}
-            </button>
-
-            <button
-              onClick={() => {
-                setDeleteConfirmation(true);
-              }}
-              className="deleteAccount-button-gradient mt-4 flex w-full cursor-pointer items-center justify-center gap-2.5 rounded-[5px] py-3.5 font-bold dark:text-black">
-              <img
-                src={BinIcon}
-                className="hover-cursor-pointer mb-1 h-5 w-5"
-              />
-              Delete Account
-            </button>
-          </div>
-        )}
-      </div>
-
+      )}
       {isProfilePictureUploadMenu && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
           <ProfilePictureUploadModal

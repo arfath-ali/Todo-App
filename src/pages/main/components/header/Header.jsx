@@ -15,10 +15,10 @@ import DarkThemeIcon from '/src/assets/images/icons/icon-moon.svg';
 import UserIcon from '/src/assets/images/icons/icon-user.png';
 import SignOutIcon from '/src/assets/images/icons/icon-sign-out.png';
 
-const Header = () => {
+const Header = ({ windowWidth }) => {
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
-  const { userProfile, isSignedIn } = useUserProfile();
+  const { userProfile, isSignedIn, isUserProfileLoading } = useUserProfile();
   const { isSignedOut, setIsSignedOut } = useSignOut();
 
   const clearAllUserData = useClearUserData();
@@ -59,21 +59,26 @@ const Header = () => {
 
         <img
           src={theme === 'dark' ? LightThemeIcon : DarkThemeIcon}
-          className="desktop:w-[26px] desktop:h-[26px] h-5 w-[1.2075rem] hover:cursor-pointer"
+          className="tablet:w-[26px] tablet:h-[26px] h-5 w-[1.2075rem] hover:cursor-pointer"
           alt="Light Theme Icon"
           onClick={toggleTheme}
         />
       </header>
       <div
-        className="desktop:fixed desktop:top-4 absolute top-3 right-6 z-50"
+        className={`desktop:fixed desktop:top-4 absolute top-3 right-6 z-50`}
         ref={menuRef}
         onClick={() => {
           setDisplayMenu((prev) => !prev);
         }}>
-        {isSignedIn ? (
+        {isUserProfileLoading ? (
+          <div className="tablet:w-10 tablet:h-10 h-5 w-5">
+            <ClipLoader color="#fff" size="100%" />
+          </div>
+        ) : isSignedIn ? (
           <img
             src={profileImageURL}
-            className="desktop:h-10 desktop:w-10 h-5 w-5 rounded-[100px] hover:cursor-pointer"
+            className="tablet:h-10 tablet:w-10 h-5 w-5 rounded-[100px] hover:cursor-pointer"
+            alt="User Profile"
           />
         ) : (
           <button
