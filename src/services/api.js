@@ -25,6 +25,8 @@ axiosInstance.interceptors.response.use(
       ) {
         isRedirecting = true;
         alert('Session expired, please sign in again');
+        localStorage.clear();
+        sessionStorage.clear();
         window.location.replace('/sign-in');
       }
     }
