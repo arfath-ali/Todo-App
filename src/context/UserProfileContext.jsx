@@ -28,7 +28,7 @@ export function UserProfileProvider({ children }) {
         sessionStorage.setItem('wasSignedIn', 'true');
       } else {
         setUserProfile(null);
-        setIsSignedIn(true);
+        setIsSignedIn(false);
         sessionStorage.removeItem('wasSignedIn');
       }
     } catch (err) {
