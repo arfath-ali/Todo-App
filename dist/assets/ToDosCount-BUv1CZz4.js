@@ -1,1 +1,0 @@
-import{j as s}from"./index-y-M8vdV_.js";const t=({toDos:e=[]})=>{const l=(e==null?void 0:e.length)||0;return s.jsx("div",{className:"app-text-small",children:l===1?s.jsxs("p",{children:[" ",s.jsx("span",{className:"font-bold",children:l})," item left"]}):s.jsxs("p",{children:[s.jsx("span",{className:"font-bold",children:l})," items left"]})})};export{t as default};
