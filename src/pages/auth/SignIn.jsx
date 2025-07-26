@@ -88,6 +88,7 @@ const SignIn = () => {
 
   const handleGoogleSignIn = async () => {
     try {
+      setIsLoading(true);
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
       const token = await user.getIdToken();
@@ -104,6 +105,8 @@ const SignIn = () => {
     } catch (error) {
       console.error('Google sign-in error:', error);
       setSignInError('Google sign-in failed. Please try again.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -196,8 +199,12 @@ const SignIn = () => {
           onClick={handleGoogleSignIn}
           className="darkborder-gray-300 flex w-full cursor-pointer items-center justify-center gap-3 rounded-[5px] border border-black py-3.5 hover:bg-gray-100 dark:border-gray-700 dark:hover:bg-gray-700"
           type="button">
-          <img src={googleIcon} alt="Google logo" className="h-5 w-5 mb-1" />
-          Sign in with Google
+          <img src={googleIcon} alt="Google logo" className="mb-1 h-5 w-5" />
+          {isLoading ? (
+            <ClipLoader color="#fff" size={24} />
+          ) : (
+            'Sign in with Google'
+          )}
         </button>
       </div>
 

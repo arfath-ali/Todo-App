@@ -237,18 +237,18 @@
     }
 
     .app-text-large {
-        @apply text-20 leading-20 tracking-7.5 font-bold desktop:text-40 desktop:leading-40 desktop:tracking-15;
+        @apply text-20 leading-20 tracking-7.5 font-bold tablet:text-40 tablet:leading-40 tablet:tracking-15;
     }
 
     .app-text-large-tight {
-        @apply text-20 desktop:text-40 desktop:leading-40 tracking-negative-17 leading-20
+        @apply text-20 tablet:text-40 tablet:leading-40 tracking-negative-17 leading-20
     }
 
     .app-text-medium {
-        @apply text-14 leading-14 tracking-negative-17 desktop:text-18 desktop:leading-18 desktop:tracking-negative-25;
+        @apply text-14 leading-14 tracking-negative-17 tablet:text-18 tablet:leading-18 tablet:tracking-negative-25;
     }
 
     .app-text-small {
-        @apply text-12 tracking-negative-19 desktop:text-14 desktop:tracking-negative-25 desktop:leading-14 leading-12
+        @apply text-12 tracking-negative-19 tablet:text-14 tablet:tracking-negative-25 tablet:leading-14 leading-12
     }
 }

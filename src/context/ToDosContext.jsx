@@ -16,30 +16,38 @@ export function ToDosProvider({ children }) {
   const [updatedToDos, setUpdatedToDos] = useState([]);
   const [reorderedToDoList, setReorderedToDoList] = useState([]);
   const [path, setPath] = useState('');
+  const [isFetchingToDos, setIsFetchingToDos] = useState(false);
 
   const fetchToDoList = async () => {
-    const toDoOrderRes = await axiosInstance.post('/api/get-todo-order', {
-      email,
-    });
-    const toDoListRes = await axiosInstance.post('/api/get-todo-list', {
-      email,
-    });
+    setIsFetchingToDos(true);
+    try {
+      const toDoOrderRes = await axiosInstance.post('/api/get-todo-order', {
+        email,
+      });
+      const toDoListRes = await axiosInstance.post('/api/get-todo-list', {
+        email,
+      });
 
-    const toDoOrder = toDoOrderRes.data?.result || {};
-    const toDoList = toDoListRes.data?.result || [];
+      const toDoOrder = toDoOrderRes.data?.result || {};
+      const toDoList = toDoListRes.data?.result || [];
 
-    const idToToDoMap = new Map(toDoList.map((toDo) => [toDo.toDoId, toDo]));
+      const idToToDoMap = new Map(toDoList.map((toDo) => [toDo.toDoId, toDo]));
 
-    const getOrderedList = (ids) =>
-      (ids || []).map((id) => idToToDoMap.get(id)).filter(Boolean);
+      const getOrderedList = (ids) =>
+        (ids || []).map((id) => idToToDoMap.get(id)).filter(Boolean);
 
-    setAllToDos(getOrderedList((toDoOrder.allToDos || []).map((id) => id)));
-    setActiveToDos(
-      getOrderedList((toDoOrder.activeToDos || []).map((id) => id)),
-    );
-    setCompletedToDos(
-      getOrderedList((toDoOrder.completedToDos || []).map((id) => id)),
-    );
+      setAllToDos(getOrderedList((toDoOrder.allToDos || []).map((id) => id)));
+      setActiveToDos(
+        getOrderedList((toDoOrder.activeToDos || []).map((id) => id)),
+      );
+      setCompletedToDos(
+        getOrderedList((toDoOrder.completedToDos || []).map((id) => id)),
+      );
+    } catch (error) {
+      console.log('Error during fetching todos: ', error);
+    } finally {
+      setIsFetchingToDos(false);
+    }
   };
 
   useEffect(() => {
