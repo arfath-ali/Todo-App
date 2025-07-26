@@ -94,6 +94,7 @@ export function ToDosProvider({ children }) {
         setUpdatedToDos,
         setReorderedToDoList,
         setPath,
+        isFetchingToDos,
         clearToDos,
       }}>
       {children}
