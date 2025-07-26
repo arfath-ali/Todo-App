@@ -9,59 +9,115 @@ import axiosInstance from '/src/services/api.js';
 import CreateToDoItem from './components/CreateToDoItem.jsx';
 
 const TodoItems = () => {
-  const { fetchToDoList } = useToDos();
+  const { setUpdatedToDos, setReorderedToDoList, setPath } = useToDos();
   const { currentPath, toDos } = useToDosPath();
   const { userProfile } = useUserProfile();
   const email = userProfile?.email;
 
   const [draggedId, setDraggedId] = useState('');
 
+  let updatedToDoList, data;
+
   useEffect(() => {
     document.title = 'All ToDos – ToDo App';
   }, []);
 
-  const handleDragAndDrop = async (droppedId) => {
+  const handleDragAndDrop = (droppedId) => {
     if (draggedId === null || draggedId === droppedId) return;
+
+    const currentToDosIds = toDos.map((toDo) => toDo.toDoId);
+
+    const draggedIndex = currentToDosIds.findIndex((id) => id === draggedId);
+    const droppedIndex = currentToDosIds.findIndex((id) => id === droppedId);
+
+    if (draggedIndex === -1 || droppedIndex === -1) return;
+
+    const updatedToDosIds = [...currentToDosIds];
+    updatedToDosIds[draggedIndex] = droppedId;
+    updatedToDosIds[droppedIndex] = draggedId;
+
+    updatedToDoList = updatedToDosIds.map((id) =>
+      toDos.find((toDo) => toDo.toDoId === id),
+    );
+
+    setReorderedToDoList(updatedToDoList);
+    setPath(currentPath);
+
+    data = JSON.stringify({
+      currentPath,
+      email,
+      draggedId,
+      droppedId,
+    });
+
     try {
-      await axiosInstance.post('/api/todos-reorder', {
+      axiosInstance.post('/api/todos-reorder', {
         currentPath,
         email,
         draggedId,
         droppedId,
       });
 
-      fetchToDoList();
       setDraggedId('');
     } catch (error) {
-      console.log(error);
+      if (navigator.sendBeacon) {
+        const blob = new Blob([data], { type: 'application/json' });
+        navigator.sendBeacon('/api/todos-reorder', blob);
+      }
     }
   };
 
-  const handleToggleToDoCheckedStatus = async (id) => {
-    const updatedToDoList = toDos.map((toDo) =>
-      toDo.id === id ? { ...toDo, isChecked: !toDo.isChecked } : toDo,
+  const handleToggleToDoCheckedStatus = (id) => {
+    updatedToDoList = toDos.map((toDo) =>
+      toDo.toDoId === id ? { ...toDo, isChecked: !toDo.isChecked } : toDo,
     );
+
+    setUpdatedToDos(updatedToDoList);
 
     const updatedToDoItem = updatedToDoList.find((item) => item.toDoId === id);
 
     if (!updatedToDoItem) return;
 
-    await axiosInstance.post('/api/update-todo-status', {
+    data = JSON.stringify({
       email,
       toggledId: updatedToDoItem.toDoId,
-      isChecked: !updatedToDoItem.isChecked,
+      isChecked: updatedToDoItem.isChecked,
     });
 
-    fetchToDoList();
+    axiosInstance
+      .post('/api/update-todo-status', {
+        email,
+        toggledId: updatedToDoItem.toDoId,
+        isChecked: updatedToDoItem.isChecked,
+      })
+      .catch(() => {
+        if (navigator.sendBeacon) {
+          const blob = new Blob([data], { type: 'application/json' });
+          navigator.sendBeacon('/api/update-todo-status', blob);
+        }
+      });
   };
 
-  const handleClearToDoById = async (id) => {
-    await axiosInstance.post('/api/delete-todo-item', {
+  const handleClearToDoById = (id) => {
+    updatedToDoList = toDos.filter((toDo) => toDo.toDoId !== id);
+    setUpdatedToDos(updatedToDoList);
+
+    data = JSON.stringify({
       email,
       deletedId: id,
     });
 
-    fetchToDoList();
+    axiosInstance
+      .post('/api/delete-todo-item', {
+        email,
+        deletedId: id,
+      })
+      .catch(() => {
+        if (navigator.sendBeacon) {
+          const blob = new Blob([data], { type: 'application/json' });
+          navigator.sendBeacon('/api/delete-todo-item', blob);
+        }
+      });
   };
 
   return (

@@ -13,6 +13,9 @@ export function ToDosProvider({ children }) {
   const [allToDos, setAllToDos] = useState([]);
   const [activeToDos, setActiveToDos] = useState([]);
   const [completedToDos, setCompletedToDos] = useState([]);
+  const [updatedToDos, setUpdatedToDos] = useState([]);
+  const [reorderedToDoList, setReorderedToDoList] = useState([]);
+  const [path, setPath] = useState('');
 
   const fetchToDoList = async () => {
     const toDoOrderRes = await axiosInstance.post('/api/get-todo-order', {
@@ -39,17 +42,36 @@ export function ToDosProvider({ children }) {
     );
   };
 
-  function clearToDos() {
-    setAllToDos([]);
-    setActiveToDos([]);
-    setCompletedToDos([]);
-  }
+  useEffect(() => {
+    if (updatedToDos) {
+      setAllToDos(updatedToDos);
+      setActiveToDos(updatedToDos.filter((toDo) => !toDo.isChecked));
+      setCompletedToDos(updatedToDos.filter((toDo) => toDo.isChecked));
+    }
+  }, [updatedToDos]);
+
+  useEffect(() => {
+    if (reorderedToDoList) {
+      if (path === 'all') setAllToDos(reorderedToDoList);
+      else if (path === 'active') setActiveToDos(reorderedToDoList);
+      else if (path === 'completed') setCompletedToDos(reorderedToDoList);
+      return;
+    }
+  }, [reorderedToDoList, path]);
 
   useEffect(() => {
     if (!email) return;
 
     fetchToDoList();
   }, [email]);
+
+  function clearToDos() {
+    setAllToDos([]);
+    setActiveToDos([]);
+    setCompletedToDos([]);
+    setUpdatedToDos([]);
+    setReorderedToDoList([]);
+  }
 
   return (
     <ToDosContext.Provider
@@ -61,6 +83,9 @@ export function ToDosProvider({ children }) {
         completedToDos,
         setCompletedToDos,
         fetchToDoList,
+        setUpdatedToDos,
+        setReorderedToDoList,
+        setPath,
         clearToDos,
       }}>
       {children}

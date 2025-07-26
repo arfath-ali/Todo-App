@@ -28,13 +28,13 @@ export function ToDosPathProvider({ children }) {
       setToDos([]);
     } else if (path === '/all') {
       setCurrentPath('all');
-      setToDos(allToDos);
+      setToDos([...allToDos]);
     } else if (path === '/active') {
       setCurrentPath('active');
-      setToDos(activeToDos);
+      setToDos([...activeToDos]);
     } else if (path === '/completed') {
       setCurrentPath('completed');
-      setToDos(completedToDos);
+      setToDos([...completedToDos]);
     } else if (path === '/profile') {
       setCurrentPath('profile');
       setToDos([]);
@@ -44,14 +44,19 @@ export function ToDosPathProvider({ children }) {
     }
   }, [location, allToDos, activeToDos, completedToDos]);
 
-  const clearToDosPath = () => {
-    setCurrentPath('');
+  function clearToDosPath() {
     setToDos([]);
-  };
+    setCurrentPath('');
+  }
 
   return (
     <ToDosPathContext.Provider
-      value={{ toDos, setToDos, currentPath, clearToDosPath }}>
+      value={{
+        toDos,
+        setToDos,
+        currentPath,
+        clearToDosPath,
+      }}>
       {children}
     </ToDosPathContext.Provider>
   );

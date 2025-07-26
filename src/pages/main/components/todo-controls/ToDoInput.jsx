@@ -8,7 +8,7 @@ import { useToDosPath } from '/src/context/ToDosPathContext';
 import axiosInstance from '/src/services/api.js';
 
 const ToDoInput = ({ windowWidth }) => {
-  const { allToDos, setAllToDos, setActiveToDos } = useToDos();
+  const { allToDos, setUpdatedToDos } = useToDos();
   const { currentPath } = useToDosPath();
   const { userProfile, isSignedIn } = useUserProfile();
   const email = userProfile?.email;
@@ -33,23 +33,26 @@ const ToDoInput = ({ windowWidth }) => {
       createdAt: Date.now(),
     };
 
-    try {
-      await axiosInstance.post('/api/create-todo-list', {
+    setUpdatedToDos((prev) => [...prev, newToDo]);
+
+    const data = JSON.stringify({
+      email,
+      newToDo,
+      index: allToDos.length,
+    });
+
+    axiosInstance
+      .post('/api/create-todo-list', {
         email,
         newToDo,
         index: allToDos.length,
+      })
+      .catch(() => {
+        if (navigator.sendBeacon) {
+          const blob = new Blob([data], { type: 'application/json' });
+          navigator.sendBeacon('/api/create-todo-list', blob);
+        }
       });
-      const toDoList = await axiosInstance.post('/api/get-todo-list', {
-        email,
-        newId: newToDo.toDoId,
-      });
-      const latestToDo = toDoList.data?.result;
-
-      setAllToDos((prev) => [...prev, latestToDo]);
-      setActiveToDos((prev) => [...prev, latestToDo]);
-    } catch (error) {
-      console.log(error);
-    }
 
     setInput('');
   };
