@@ -1,6 +1,6 @@
 import { Suspense, lazy } from 'react';
 import { useTheme } from '/src/context/ThemeContext';
-import { useToDos } from 'src/context/ToDosContex';
+import { useToDos } from 'src/context/ToDosContext';
 import { useToDosPath } from '/src/context/ToDosPathContext';
 import { useWindowSize } from '/src/hooks/useWindowSize';
 
