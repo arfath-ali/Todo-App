@@ -1,1 +1,0 @@
-import{j as e}from"./index-BLuZSSye.js";const a=()=>e.jsxs("h1",{className:"app-text-large-tight desktop:max-w-[650px] max-w-[300px] font-bold",children:["Welcome! Your organized life"," ",e.jsx("span",{className:"text-gradient-heading",children:"starts here."})]});export{a as default};
