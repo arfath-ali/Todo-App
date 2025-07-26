@@ -72,7 +72,7 @@ const ToDoAppPage = () => {
 
             <div
               className={`${isSignedIn ? 'shadow-custom-light dark:shadow-custom-dark' : ''} overflow-y-scroll rounded-[5px] ${
-                windowWidth < 375
+                windowWidth >= 768
                   ? currentPath === 'all'
                     ? 'mt-2'
                     : 'mt-21'

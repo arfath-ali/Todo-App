@@ -10,8 +10,8 @@ function Spinner() {
       </style>
       <div
         style={{
-          width: 24,
-          height: 24,
+          width: 32,
+          height: 32,
           borderRadius: '50%',
           border: '4px solid transparent',
           borderTop: '4px solid',
