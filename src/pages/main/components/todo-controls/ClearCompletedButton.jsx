@@ -5,23 +5,37 @@ import { useToDosPath } from '/src/context/ToDosPathContext';
 import axiosInstance from '/src/services/api.js';
 
 const ClearCompletedButton = ({ windowWidth }) => {
-  const { allToDos, completedToDos, fetchToDoList } = useToDos();
+  const { allToDos, completedToDos, setUpdatedToDos } = useToDos();
   const { currentPath } = useToDosPath();
   const { userProfile } = useUserProfile();
   const email = userProfile?.email;
 
   const clearCompletedTasks = async () => {
+    const remainingTasks = allToDos.filter((item) => !item.isChecked);
     const completedTasks = allToDos.filter((item) => item.isChecked);
+
     if (!completedTasks) return;
+
+    setUpdatedToDos(remainingTasks);
 
     const completedTasksIds = completedTasks.map((task) => task.toDoId);
 
-    await axiosInstance.post('/api/delete-todo-item', {
+    const data = JSON.stringify({
       email,
       deletedId: completedTasksIds,
     });
 
-    fetchToDoList();
+    axiosInstance
+      .post('/api/delete-todo-item', {
+        email,
+        deletedId: completedTasksIds,
+      })
+      .catch(() => {
+        if (navigator.sendBeacon) {
+          const blob = new Blob([data], { type: 'application/json' });
+          navigator.sendBeacon('/api/delete-todo-item', blob);
+        }
+      });
   };
   return (
     <button

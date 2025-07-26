@@ -18,8 +18,7 @@ const MobileToDoUtilityBar = lazy(
 const ToDoAppPage = () => {
   const windowWidth = useWindowSize();
   const { theme } = useTheme();
-  const { currentPath } = useToDosPath();
-  const { isSignedIn } = useUserProfile();
+  const { currentPath, toDos } = useToDosPath();
 
   const isAuthPage = currentPath === 'sign-in' || currentPath === 'sign-up';
   const isToDoPage =
@@ -71,7 +70,7 @@ const ToDoAppPage = () => {
             )}
 
             <div
-              className={`${isSignedIn ? 'shadow-custom-light dark:shadow-custom-dark' : ''} overflow-y-scroll rounded-[5px] ${
+              className={`${toDos.length !== 0 ? 'shadow-custom-light dark:shadow-custom-dark' : ''} overflow-y-scroll rounded-[5px] ${
                 windowWidth >= 768
                   ? currentPath === 'all'
                     ? 'mt-2'

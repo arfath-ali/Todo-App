@@ -9,7 +9,7 @@ import axiosInstance from '/src/services/api.js';
 import CreateToDoItem from './components/CreateToDoItem.jsx';
 
 const TodoItems = () => {
-  const { setUpdatedToDos, setReorderedToDoList, setPath } = useToDos();
+  const { setUpdatedToDos, setReorderedToDoList } = useToDos();
   const { currentPath, toDos } = useToDosPath();
   const { userProfile } = useUserProfile();
   const email = userProfile?.email;
@@ -40,8 +40,7 @@ const TodoItems = () => {
       toDos.find((toDo) => toDo.toDoId === id),
     );
 
-    setReorderedToDoList(updatedToDoList);
-    setPath(currentPath);
+    setReorderedToDoList({ list: updatedToDoList, path: currentPath });
 
     data = JSON.stringify({
       currentPath,
@@ -50,21 +49,21 @@ const TodoItems = () => {
       droppedId,
     });
 
-    try {
-      axiosInstance.post('/api/todos-reorder', {
+    axiosInstance
+      .post('/api/todos-reorder', {
         currentPath,
         email,
         draggedId,
         droppedId,
+      })
+      .catch(() => {
+        if (navigator.sendBeacon) {
+          const blob = new Blob([data], { type: 'application/json' });
+          navigator.sendBeacon('/api/todos-reorder', blob);
+        }
       });
 
-      setDraggedId('');
-    } catch (error) {
-      if (navigator.sendBeacon) {
-        const blob = new Blob([data], { type: 'application/json' });
-        navigator.sendBeacon('/api/todos-reorder', blob);
-      }
-    }
+    setDraggedId('');
   };
 
   const handleToggleToDoCheckedStatus = (id) => {
@@ -124,7 +123,7 @@ const TodoItems = () => {
     <ul>
       {toDos.map((item, index) => (
         <CreateToDoItem
-          key={index}
+          key={item.toDoId}
           input={item.toDo}
           id={item.toDoId}
           isChecked={item.isChecked}
