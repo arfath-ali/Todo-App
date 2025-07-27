@@ -24,7 +24,6 @@ const UsernameVerification = ({
   const [isLoading, setIsLoading] = useState(false);
 
   const handleProceedButton = async () => {
-    if (!username) return;
     setIsLoading(true);
     setTimeout(async () => {
       if (username && username.length >= 3) {
@@ -87,6 +86,7 @@ const UsernameVerification = ({
         <button
           className={`deleteAccount-button-gradient desktop:max-h-[42px] desktop:min-w-[255px] max-h-[38px] min-w-[163px] flex-grow cursor-pointer rounded-[5px] p-3 ${username.length >= 3 ? '' : 'opacity-55'}`}
           onClick={() => {
+            if (!username) return;
             handleProceedButton();
           }}>
           {isLoading ? <ClipLoader color="#fff" size={16} /> : 'Proceed'}

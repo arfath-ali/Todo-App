@@ -41,12 +41,6 @@ const SignIn = () => {
     const message = sessionStorage.getItem('accountDeleteMessage');
     if (message) {
       setSuccessMessage(message);
-      const timer = setTimeout(() => {
-        setSuccessMessage('');
-        sessionStorage.removeItem('accountDeleteMessage');
-      }, 4000); 
-
-      return () => clearTimeout(timer);
     }
   }, []);
 
