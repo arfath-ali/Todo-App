@@ -166,8 +166,8 @@ const ResetPassword = () => {
                 !isNewPasswordValid &&
                 !isPasswordFieldFocused && (
                   <div
-                    className={`${windowWidth >= 1440 ? 'absolute' : ''} top-0 left-[-320px]`}>
-                    <p className="text-error max-w-[300px]">
+                    className={`${windowWidth >= 768 ? 'absolute' : ''} desktop:left-[-280px] top-0 left-[-200px]`}>
+                    <p className="text-error desktop:max-w-[300px] tablet:max-w-[200px] max-w-[300px]">
                       Password must contain at least 8 characters, including
                       uppercase, lowercase, number, and special character.
                     </p>
