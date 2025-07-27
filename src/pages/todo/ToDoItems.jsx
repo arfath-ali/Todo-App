@@ -9,7 +9,13 @@ import axiosInstance from '/src/services/api.js';
 import CreateToDoItem from './components/CreateToDoItem.jsx';
 
 const TodoItems = () => {
-  const { allToDos, setUpdatedToDos, setReorderedToDoList } = useToDos();
+  const {
+    allToDos,
+    activeToDos,
+    completedToDos,
+    setUpdatedToDos,
+    setReorderedToDoList,
+  } = useToDos();
   const { currentPath, toDos } = useToDosPath();
   const { userProfile } = useUserProfile();
   const email = userProfile?.email;

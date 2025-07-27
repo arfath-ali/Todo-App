@@ -53,9 +53,30 @@ export function ToDosProvider({ children }) {
   };
 
   useEffect(() => {
+    const updatedMap = new Map(updatedToDos.map((toDo) => [toDo.toDoId, toDo]));
+
     setAllToDos([...updatedToDos]);
-    setActiveToDos([...updatedToDos.filter((toDo) => !toDo.isChecked)]);
-    setCompletedToDos([...updatedToDos.filter((toDo) => toDo.isChecked)]);
+
+    setActiveToDos((prev) => [
+      ...prev.filter(
+        (toDo) =>
+          updatedMap.has(toDo.toDoId) && !updatedMap.get(toDo.toDoId).isChecked,
+      ),
+      ...updatedToDos.filter(
+        (toDo) =>
+          !prev.find((p) => p.toDoId === toDo.toDoId) && !toDo.isChecked,
+      ),
+    ]);
+
+    setCompletedToDos((prev) => [
+      ...prev.filter(
+        (toDo) =>
+          updatedMap.has(toDo.toDoId) && updatedMap.get(toDo.toDoId).isChecked,
+      ),
+      ...updatedToDos.filter(
+        (toDo) => !prev.find((p) => p.toDoId === toDo.toDoId) && toDo.isChecked,
+      ),
+    ]);
   }, [updatedToDos]);
 
   useEffect(() => {
