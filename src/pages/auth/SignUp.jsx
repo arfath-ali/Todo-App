@@ -109,7 +109,7 @@ const SignUp = () => {
       return;
     }
 
-    if (!isUsernameAvailable) {
+    if (isUsernameValid && !isUsernameAvailable) {
       setSignUpError('Username already taken');
     }
 
