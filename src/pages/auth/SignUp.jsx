@@ -58,7 +58,7 @@ const SignUp = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [signUpError, setSignUpError] = useState('');
-  const [isSubmittinSignUp, setIsSubmittinSignUp] = useState(false);
+  const [isSubmittingSignUp, setIsSubmittingSignUp] = useState(false);
 
   const handleFullName = (fullNameInput) => {
     const refinedFullName = fullNameInput.replace(/\s+/g, ' ');
@@ -121,7 +121,7 @@ const SignUp = () => {
       isPasswordMatched
     ) {
       setUsernameStatus('');
-      setIsSubmittinSignUp(true);
+      setIsSubmittingSignUp(true);
 
       setTimeout(async () => {
         try {
@@ -143,7 +143,7 @@ const SignUp = () => {
           }
         } finally {
           setUsername('');
-          setIsSubmittinSignUp(false);
+          setIsSubmittingSignUp(false);
         }
       }, 1000);
     }
@@ -162,15 +162,16 @@ const SignUp = () => {
           </div>
         )}
 
-        {isUsernameAvailable ? (
-          <div className="text-success desktop:mb-3 absolute bottom-full mx-auto w-full text-center">
-            <p>{usernameStatus}</p>
-          </div>
-        ) : (
-          <div className="text-error desktop:mb-3 absolute bottom-full mx-auto w-full text-center">
-            <p>{usernameStatus}</p>
-          </div>
-        )}
+        {usernameStatus &&
+          (isUsernameAvailable ? (
+            <div className="text-success desktop:mb-3 absolute bottom-full mx-auto w-full text-center">
+              <p>{usernameStatus}</p>
+            </div>
+          ) : (
+            <div className="text-error desktop:mb-3 absolute bottom-full mx-auto w-full text-center">
+              <p>{usernameStatus}</p>
+            </div>
+          ))}
 
         <div>
           <fieldset className="flex flex-col rounded-[5px] border-1 border-black dark:border-gray-700">
@@ -207,7 +208,11 @@ const SignUp = () => {
                   if (e.key === ' ') e.preventDefault();
                 }}
                 onFocus={() => setIsUsernameFieldFocused(true)}
-                onChange={(e) => setUsername(e.target.value)}
+                onChange={(e) => {
+                  setUsername(e.target.value);
+                  setUsernameStatus(''); 
+                  setIsUsernameAvailable(false);
+                }}
                 onBlur={() => handleUsernameBlur()}
                 value={username}
                 maxLength={15}
@@ -384,7 +389,7 @@ const SignUp = () => {
         </div>
 
         <button className="button-gradient mt-2 flex cursor-pointer items-center justify-center rounded-[5px] py-4.5 dark:text-black">
-          {isSubmittinSignUp ? (
+          {isSubmittingSignUp ? (
             <ClipLoader color="#fff" size={24} />
           ) : (
             'Sign Up'
