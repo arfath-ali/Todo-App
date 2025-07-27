@@ -38,12 +38,12 @@ const SignIn = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (location.state?.message) {
-      setSuccessMessage(location.state.message);
-
-      navigate(location.pathname, { replace: true });
+    const message = sessionStorage.getItem('accountDeleteMessage');
+    if (message) {
+      setSuccessMessage(message);
+      sessionStorage.removeItem('accountDeleteMessage');
     }
-  }, [location, navigate]);
+  }, []);
 
   useEffect(() => {
     if (successMessage) {

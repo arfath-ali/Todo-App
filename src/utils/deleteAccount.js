@@ -17,9 +17,11 @@ export default async function deleteAccount(
     clearAllUserData();
 
     if (response.status === 200) {
-      navigate('/sign-in', {
-        state: { message: 'Account deleted successfully' },
-      });
+      sessionStorage.setItem(
+        'accountDeleteMessage',
+        'Account deleted successfully',
+      );
+      navigate('/sign-in', { replace: true });
       window.location.reload();
       return '';
     } else {
