@@ -451,7 +451,7 @@ const Profile = () => {
                 !isNonUsernameFieldsEditable &&
                 !isCancelButtonClicked && (
                   <div
-                    className={`${windowWidth >= 768 ? 'absolute' : ''} desktop:right-[-320px] tablet:top-0 desktop:top-auto right-[-230px] bottom-0`}>
+                    className={`${windowWidth >= 768 ? 'absolute' : ''} desktop:right-[-320px] tablet:top-full desktop:top-auto right-[-230px] bottom-0`}>
                     <p className="text-error desktop:max-w-[300px] tablet:max-w-[200px] max-w-[300px]">
                       Username must be at least 3 characters long, start with a
                       lowercase letter or underscore(_), include at least one
