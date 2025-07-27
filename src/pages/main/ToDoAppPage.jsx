@@ -71,10 +71,10 @@ const ToDoAppPage = () => {
 
             <div
               className={`${toDos.length !== 0 ? 'shadow-custom-light dark:shadow-custom-dark' : ''} overflow-y-scroll rounded-[5px] ${
-                windowWidth <= 768
+                windowWidth >= 768
                   ? currentPath === 'all'
-                    ? 'mt-2'
-                    : 'mt-21'
+                    ? 'mt-21'
+                    : 'mt-2'
                   : currentPath === 'all'
                     ? 'mt-4'
                     : 'mt-16'

@@ -94,7 +94,7 @@ const Header = ({ windowWidth }) => {
       </div>
 
       {displayMenu && (
-        <div className="desktop:top-16 app-text-medium absolute top-10 right-2 z-20 flex flex-col rounded-[5px] bg-white dark:bg-gray-700 dark:text-gray-400">
+        <div className="tablet:top-16 app-text-medium absolute top-10 right-2 z-20 flex flex-col rounded-[5px] bg-white dark:bg-gray-700 dark:text-gray-400">
           <NavLink
             to="/profile"
             className="px-2 py-2.5 text-center dark:text-gray-300"
