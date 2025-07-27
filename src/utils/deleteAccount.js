@@ -13,6 +13,7 @@ export default async function deleteAccount(
     });
     clearAllUserData();
     sessionStorage.clear();
+    localStorage.clear();
 
     if (response.status === 200) {
       navigate('/sign-in', {
