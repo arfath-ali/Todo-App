@@ -31,6 +31,7 @@ const SignIn = () => {
   const [usernameOrEmail, setUsernameOrEmail] = useState('');
   const [password, setPassword] = useState('');
   const [signInError, setSignInError] = useState('');
+  const [googleSignInError, setGoogleSignInError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleSignInLoading, setIsGoogleSignInLoading] = useState(false);
   const [displayPassword, setDisplayPassword] = useState(false);
@@ -54,6 +55,7 @@ const SignIn = () => {
   }, [successMessage]);
 
   const handleSignIn = async (e) => {
+    setGoogleSignInError('');
     e.preventDefault();
 
     if (!usernameOrEmail || !password) {
@@ -79,6 +81,9 @@ const SignIn = () => {
       } catch (err) {
         if (err.response) {
           setSignInError(err.response.data.error || 'Sign In failed');
+          setTimeout(() => {
+            setSignInError('');
+          }, 4000);
         } else {
           setSignInError('Network error');
         }
@@ -90,6 +95,7 @@ const SignIn = () => {
 
   const handleGoogleSignIn = async () => {
     try {
+      setSignInError('');
       setIsGoogleSignInLoading(true);
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
@@ -101,12 +107,15 @@ const SignIn = () => {
 
       await loadUserProfile();
 
-      setSignInError('');
+      setGoogleSignInError('');
 
       navigate('/all', { replace: true });
     } catch (error) {
       console.error('Google sign-in error:', error);
-      setSignInError('Google sign-in failed. Please try again.');
+      setGoogleSignInError('Google sign-in failed. Please try again.');
+      setTimeout(() => {
+        setGoogleSignInError('');
+      }, 4000);
     } finally {
       setIsGoogleSignInLoading(false);
     }
@@ -123,6 +132,12 @@ const SignIn = () => {
         className="desktop:mt-10 relative mx-auto mt-9 flex max-w-[300px] flex-col gap-4"
         onSubmit={(e) => handleSignIn(e)}>
         {signInError && (
+          <div className="text-error absolute bottom-full mx-auto mb-3 w-full text-center">
+            <p>{signInError}</p>
+          </div>
+        )}
+
+        {googleSignInError && (
           <div className="text-error desktop:mb-2 absolute bottom-full mx-auto mb-1 w-full text-center">
             <p>{signInError}</p>
           </div>

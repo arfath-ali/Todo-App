@@ -229,8 +229,8 @@ const SignUp = () => {
 
           {username && !isUsernameValid && !isUsernameFieldFocused && (
             <div
-              className={`${windowWidth >= 768 ? 'absolute' : ''} top-0 right-[-320px]`}>
-              <p className="text-error max-w-[300px]">
+              className={`${windowWidth >= 768 ? 'absolute' : ''} desktop:right-[-320px] top-0 right-[-230px]`}>
+              <p className="text-error desktop:max-w-[300px] max-w-[200px]">
                 Username must be at least 3 characters long, start with a
                 lowercase letter or underscore(_), include at least one number,
                 use only lowercase letters, numbers, dots(.), or underscores(_),
@@ -318,8 +318,8 @@ const SignUp = () => {
 
           {password && !isPasswordValid && !isPasswordFieldFocused && (
             <div
-              className={`${windowWidth >= 768 ? 'absolute' : ''} top-0 left-[-320px]`}>
-              <p className="text-error max-w-[300px]">
+              className={`${windowWidth >= 768 ? 'absolute' : ''} desktop:left-[-320px] top-0 left-[-200px]`}>
+              <p className="text-error desktop:max-w-[300px] max-w-[200px]">
                 Password must contain at least 8 characters, including
                 uppercase, lowercase, number, and special character.
               </p>
