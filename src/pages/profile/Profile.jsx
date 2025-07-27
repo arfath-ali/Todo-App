@@ -241,12 +241,10 @@ const Profile = () => {
     if (hasChanges) {
       if (profileImageChanged && imageToUpload) {
         await uploadNewProfilePicture();
-        setUpdateStatus('updated successfully.');
       }
 
       if (noProfilePicture) {
         await removeProfilePicture();
-        setUpdateStatus('updated successfully.');
       }
 
       if (fullNameChanged) {
@@ -256,7 +254,6 @@ const Profile = () => {
             email,
           });
           await loadUserProfile();
-          setUpdateStatus(res.data.message);
         } catch (error) {
           console.log(error);
           setIsLoading(false);
@@ -291,6 +288,7 @@ const Profile = () => {
       setPreviewImage('');
       setImageToUpload('');
       setGlobalUsername('');
+      setUpdateStatus('Updated successfully.');
       setChangesSaved(true);
       setHasChanges(false);
       setIsEditable(false);
