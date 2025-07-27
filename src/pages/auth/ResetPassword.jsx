@@ -99,7 +99,7 @@ const ResetPassword = () => {
       {!isSubmitted && (
         <div className="flex h-screen flex-col items-center justify-center">
           <h1>
-            <span className="text-gradient-heading app-text-large-tight">
+            <span className="text-gradient-heading app-text-large-tight text-center">
               Reset Your Password
             </span>
           </h1>
