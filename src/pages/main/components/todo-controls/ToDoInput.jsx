@@ -8,9 +8,9 @@ import { useToDosPath } from '/src/context/ToDosPathContext';
 import axiosInstance from '/src/services/api.js';
 
 const ToDoInput = ({ windowWidth }) => {
-  const { allToDos, setUpdatedToDos } = useToDos();
+  const { allToDos, setAllToDos, setActiveToDos } = useToDos();
   const { currentPath } = useToDosPath();
-  const { userProfile, isSignedIn, isUserProfileLoading } = useUserProfile();
+  const { userProfile, isSignedIn } = useUserProfile();
   const email = userProfile?.email;
   const [input, setInput] = useState('');
 
@@ -33,7 +33,8 @@ const ToDoInput = ({ windowWidth }) => {
       createdAt: Date.now(),
     };
 
-    setUpdatedToDos((prev) => [...prev, newToDo]);
+    setAllToDos((prev) => [...prev, newToDo]);
+    setActiveToDos((prev) => [...prev, newToDo]);
 
     const data = JSON.stringify({
       email,

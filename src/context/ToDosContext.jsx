@@ -14,7 +14,10 @@ export function ToDosProvider({ children }) {
   const [activeToDos, setActiveToDos] = useState([]);
   const [completedToDos, setCompletedToDos] = useState([]);
   const [updatedToDos, setUpdatedToDos] = useState([]);
-  const [reorderedToDoList, setReorderedToDoList] = useState([]);
+  const [reorderedToDoList, setReorderedToDoList] = useState({
+    list: [],
+    path: '',
+  });
   const [isFetchingToDos, setIsFetchingToDos] = useState(false);
 
   const fetchToDoList = async () => {
@@ -35,13 +38,13 @@ export function ToDosProvider({ children }) {
       const getOrderedList = (ids) =>
         (ids || []).map((id) => idToToDoMap.get(id)).filter(Boolean);
 
-      setAllToDos(getOrderedList((toDoOrder.allToDos || []).map((id) => id)));
-      setActiveToDos(
-        getOrderedList((toDoOrder.activeToDos || []).map((id) => id)),
-      );
-      setCompletedToDos(
-        getOrderedList((toDoOrder.completedToDos || []).map((id) => id)),
-      );
+      const all = getOrderedList(toDoOrder.allToDos || []);
+      const active = getOrderedList(toDoOrder.activeToDos || []);
+      const completed = getOrderedList(toDoOrder.completedToDos || []);
+
+      setAllToDos(all);
+      setActiveToDos(active);
+      setCompletedToDos(completed);
     } catch (error) {
       console.log('Error during fetching todos: ', error);
     } finally {
@@ -50,21 +53,17 @@ export function ToDosProvider({ children }) {
   };
 
   useEffect(() => {
-    if (Array.isArray(updatedToDos) && updatedToDos.length > 0) {
-      setAllToDos([...updatedToDos]);
-      setActiveToDos([...updatedToDos.filter((toDo) => !toDo.isChecked)]);
-      setCompletedToDos([...updatedToDos.filter((toDo) => toDo.isChecked)]);
-    }
+    setAllToDos([...updatedToDos]);
+    setActiveToDos([...updatedToDos.filter((toDo) => !toDo.isChecked)]);
+    setCompletedToDos([...updatedToDos.filter((toDo) => toDo.isChecked)]);
   }, [updatedToDos]);
 
   useEffect(() => {
-    if (Array.isArray(reorderedToDoList) && reorderedToDoList.length > 0) {
-      const { list, path } = reorderedToDoList;
+    const { list, path } = reorderedToDoList;
 
-      if (path === 'all') setAllToDos([...list]);
-      else if (path === 'active') setActiveToDos([...list]);
-      else if (path === 'completed') setCompletedToDos([...list]);
-    }
+    if (path === 'all') setAllToDos([...list]);
+    else if (path === 'active') setActiveToDos([...list]);
+    else if (path === 'completed') setCompletedToDos([...list]);
   }, [reorderedToDoList]);
 
   useEffect(() => {

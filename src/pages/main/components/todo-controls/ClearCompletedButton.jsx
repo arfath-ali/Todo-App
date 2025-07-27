@@ -10,13 +10,11 @@ const ClearCompletedButton = ({ windowWidth }) => {
   const { userProfile } = useUserProfile();
   const email = userProfile?.email;
 
-  const clearCompletedTasks = async () => {
+  const clearCompletedTasks = () => {
     const remainingTasks = allToDos.filter((item) => !item.isChecked);
     const completedTasks = allToDos.filter((item) => item.isChecked);
 
-    if (!completedTasks) return;
-
-    setUpdatedToDos(remainingTasks);
+    setUpdatedToDos([...remainingTasks]);
 
     const completedTasksIds = completedTasks.map((task) => task.toDoId);
 

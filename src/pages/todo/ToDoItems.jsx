@@ -9,7 +9,7 @@ import axiosInstance from '/src/services/api.js';
 import CreateToDoItem from './components/CreateToDoItem.jsx';
 
 const TodoItems = () => {
-  const { setUpdatedToDos, setReorderedToDoList } = useToDos();
+  const { allToDos, setUpdatedToDos, setReorderedToDoList } = useToDos();
   const { currentPath, toDos } = useToDosPath();
   const { userProfile } = useUserProfile();
   const email = userProfile?.email;
@@ -40,7 +40,7 @@ const TodoItems = () => {
       toDos.find((toDo) => toDo.toDoId === id),
     );
 
-    setReorderedToDoList({ list: updatedToDoList, path: currentPath });
+    setReorderedToDoList({ list: [...updatedToDoList], path: currentPath });
 
     data = JSON.stringify({
       currentPath,
@@ -67,11 +67,11 @@ const TodoItems = () => {
   };
 
   const handleToggleToDoCheckedStatus = (id) => {
-    updatedToDoList = toDos.map((toDo) =>
+    updatedToDoList = allToDos.map((toDo) =>
       toDo.toDoId === id ? { ...toDo, isChecked: !toDo.isChecked } : toDo,
     );
 
-    setUpdatedToDos(updatedToDoList);
+    setUpdatedToDos([...updatedToDoList]);
 
     const updatedToDoItem = updatedToDoList.find((item) => item.toDoId === id);
 
@@ -98,8 +98,9 @@ const TodoItems = () => {
   };
 
   const handleClearToDoById = (id) => {
-    updatedToDoList = toDos.filter((toDo) => toDo.toDoId !== id);
-    setUpdatedToDos(updatedToDoList);
+    updatedToDoList = allToDos.filter((toDo) => toDo.toDoId !== id);
+
+    setUpdatedToDos([...updatedToDoList]);
 
     data = JSON.stringify({
       email,
