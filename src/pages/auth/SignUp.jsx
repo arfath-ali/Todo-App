@@ -209,8 +209,9 @@ const SignUp = () => {
                 }}
                 onFocus={() => setIsUsernameFieldFocused(true)}
                 onChange={(e) => {
+                  setSignUpError('');
                   setUsername(e.target.value);
-                  setUsernameStatus(''); 
+                  setUsernameStatus('');
                   setIsUsernameAvailable(false);
                 }}
                 onBlur={() => handleUsernameBlur()}
