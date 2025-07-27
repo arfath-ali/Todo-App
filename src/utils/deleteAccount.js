@@ -11,14 +11,16 @@ export default async function deleteAccount(
       email,
       username,
     });
-    clearAllUserData();
-    sessionStorage.clear();
+
     localStorage.clear();
+    sessionStorage.clear();
+    clearAllUserData();
 
     if (response.status === 200) {
       navigate('/sign-in', {
         state: { message: 'Account deleted successfully' },
       });
+      window.location.reload();
       return '';
     } else {
       return response.data?.error || 'Failed to delete account';
