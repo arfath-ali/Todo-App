@@ -451,7 +451,7 @@ const Profile = () => {
                 !isNonUsernameFieldsEditable &&
                 !isCancelButtonClicked && (
                   <div
-                    className={`${windowWidth >= 768 ? 'absolute' : ''} desktop:right-[-320px] tablet:top-[50%] desktop:top-auto right-[-230px] bottom-0`}>
+                    className={`${windowWidth >= 768 ? 'absolute' : ''} desktop:right-[-320px] right-[-230px] bottom-0`}>
                     <p className="text-error desktop:max-w-[300px] tablet:max-w-[200px] max-w-[300px]">
                       Username must be at least 3 characters long, start with a
                       lowercase letter or underscore(_), include at least one
@@ -480,7 +480,7 @@ const Profile = () => {
                 onClick={() => handleEditProfileButton()}
                 className={`absolute top-0 cursor-pointer ${windowWidth > 768 ? 'right-[-100px]' : 'right-[-30px]'} rounded-[100px] p-[2px]`}
                 style={{ background: 'var(--color-gradient-button)' }}>
-                {windowWidth > 768 ? (
+                {windowWidth >= 768 ? (
                   <button className="flex cursor-pointer justify-center gap-2 rounded-[100px] bg-gray-300 px-2 pt-3 pb-2 font-bold hover:bg-gray-400 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700">
                     Edit Profile
                     <img
