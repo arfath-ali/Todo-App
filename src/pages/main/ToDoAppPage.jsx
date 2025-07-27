@@ -1,7 +1,6 @@
 import { Suspense, lazy } from 'react';
 import { useTheme } from '/src/context/ThemeContext';
 import { useToDosPath } from '/src/context/ToDosPathContext';
-import { useUserProfile } from '/src/context/UserProfileContext';
 import { useWindowSize } from '/src/hooks/useWindowSize';
 
 const WelcomeHeader = lazy(() => import('./components/header/WelcomeHeader'));
@@ -78,7 +77,7 @@ const ToDoAppPage = () => {
                   : currentPath === 'all'
                     ? 'mt-4'
                     : 'mt-16'
-              } desktop:max-h-[65vh] desktop:mt-4 mobile:max-h-[64vh] max-h-[61.5vh]`}>
+              } tablet:max-h-[65vh] tablet:mt-4 mobile:max-h-[64vh] max-h-[61.5vh]`}>
               <Suspense fallback={null}>
                 <ToDoAppRoutes />
               </Suspense>

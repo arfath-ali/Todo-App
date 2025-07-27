@@ -36,10 +36,10 @@ const CreateToDoItem = ({
           <div className="flex items-center gap-3">
             <img
               src={theme === 'dark' ? dragIconDarkSvg : dragIconLightSvg}
-              className="desktop:w-[18px] desktop:h-[18px] h-3 w-3 cursor-grab"
+              className="tablet:w-[18px] tablet:h-[18px] h-3 w-3 cursor-grab"
             />
             <div
-              className="radio-btn desktop:h-6 desktop:w-6 box-border flex h-5 w-5 cursor-pointer items-center justify-center rounded-full border-1 border-gray-300 dark:border-gray-700"
+              className="radio-btn tablet:h-6 tablet:w-6 box-border flex h-5 w-5 cursor-pointer items-center justify-center rounded-full border-1 border-gray-300 dark:border-gray-700"
               style={
                 isChecked
                   ? {
@@ -70,7 +70,7 @@ const CreateToDoItem = ({
             src={crossIcon}
             alt="Cross Icon"
             onClick={() => clearToDoById(id)}
-            className="desktop:w-[18px] desktop:h-[18px] h-3 w-3 cursor-pointer"
+            className="tablet:w-[18px] tablet:h-[18px] h-3 w-3 cursor-pointer"
           />
         </div>
         <div className="h-[1px] border-1 border-gray-300 dark:border-gray-700"></div>
