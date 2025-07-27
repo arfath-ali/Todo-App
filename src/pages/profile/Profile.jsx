@@ -452,7 +452,7 @@ const Profile = () => {
                 !isCancelButtonClicked && (
                   <div
                     className={`${windowWidth >= 768 ? 'absolute' : ''} desktop:right-[-320px] right-[-230px] bottom-0`}>
-                    <p className="text-error desktop:max-w-[300px] max-w-[200px]">
+                    <p className="text-error desktop:max-w-[300px] tablet:max-w-[200px] max-w-[300px]">
                       Username must be at least 3 characters long, start with a
                       lowercase letter or underscore(_), include at least one
                       number, use only lowercase letters, numbers, dots(.), or

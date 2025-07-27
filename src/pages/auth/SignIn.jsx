@@ -114,7 +114,10 @@ const SignIn = () => {
       navigate('/all', { replace: true });
     } catch (error) {
       console.error('Google sign-in error:', error);
-      if (error.code !== 'auth/cancelled-popup-request') {
+      if (
+        error.code !== 'auth/popup-closed-by-user' &&
+        error.code !== 'auth/cancelled-popup-request'
+      ) {
         setGoogleSignInError('Google sign-in failed. Please try again.');
       }
       setTimeout(() => {
