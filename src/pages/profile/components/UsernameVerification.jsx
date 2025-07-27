@@ -24,6 +24,7 @@ const UsernameVerification = ({
   const [isLoading, setIsLoading] = useState(false);
 
   const handleProceedButton = async () => {
+    if (!username) return;
     setIsLoading(true);
     setTimeout(async () => {
       if (username && username.length >= 3) {
