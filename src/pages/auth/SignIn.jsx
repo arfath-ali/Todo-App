@@ -49,6 +49,7 @@ const SignIn = () => {
     if (successMessage) {
       const timer = setTimeout(() => {
         setSuccessMessage('');
+        sessionStorage.removeItem('accountDeleteMessage');
       }, 4000);
       return () => clearTimeout(timer);
     }
@@ -94,9 +95,10 @@ const SignIn = () => {
   };
 
   const handleGoogleSignIn = async () => {
+    setGoogleSignInError('');
+    setSignInError('');
+    setIsGoogleSignInLoading(true);
     try {
-      setSignInError('');
-      setIsGoogleSignInLoading(true);
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
       const token = await user.getIdToken();
@@ -112,7 +114,9 @@ const SignIn = () => {
       navigate('/all', { replace: true });
     } catch (error) {
       console.error('Google sign-in error:', error);
-      setGoogleSignInError('Google sign-in failed. Please try again.');
+      if (error.code !== 'auth/cancelled-popup-request') {
+        setGoogleSignInError('Google sign-in failed. Please try again.');
+      }
       setTimeout(() => {
         setGoogleSignInError('');
       }, 4000);
@@ -122,9 +126,9 @@ const SignIn = () => {
   };
 
   return (
-    <div className="app-text-medium">
+    <div className="app-text-medium relative">
       {successMessage && (
-        <div className="text-error desktop:mb-2 mb-2 w-full text-center font-semibold">
+        <div className="text-error absolute bottom-full mx-auto mb-4 w-full text-center font-semibold">
           <p>{successMessage}</p>
         </div>
       )}
@@ -138,8 +142,8 @@ const SignIn = () => {
         )}
 
         {googleSignInError && (
-          <div className="text-error desktop:mb-2 absolute bottom-full mx-auto mb-1 w-full text-center">
-            <p>{signInError}</p>
+          <div className="text-error desktop:mb-2 tablet:mb-1 absolute bottom-full mx-auto mb-3 w-full text-center">
+            <p>{googleSignInError}</p>
           </div>
         )}
 

@@ -1,12 +1,17 @@
 import axios from 'axios';
 
+const isDevelopment = import.meta.env.MODE === 'development';
+
 const axiosInstance = axios.create({
-  baseURL: 'https://todo-app-backend-w88c.onrender.com',
+  baseURL: isDevelopment
+    ? 'http://localhost:3000'
+    : 'https://todo-app-backend-w88c.onrender.com',
   headers: {
     'Content-Type': 'application/json',
   },
   withCredentials: true,
 });
+
 
 let isRedirecting = false;
 

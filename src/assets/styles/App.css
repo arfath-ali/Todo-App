@@ -242,7 +242,7 @@
     }
 
     .app-text-large-tight {
-        @apply text-20 tablet:text-40 tablet:leading-40 tracking-negative-17 leading-20
+        @apply text-40 tracking-negative-17 leading-40
     }
 
     .app-text-medium {
