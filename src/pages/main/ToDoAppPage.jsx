@@ -61,7 +61,7 @@ const ToDoAppPage = () => {
             </Suspense>
 
             {windowWidth >= 768 && (
-              <div>
+              <div className="shadow-custom-light dark:shadow-custom-dark desktop:shadow-none desktop:dark:shadow-none">
                 <Suspense fallback={null}>
                   <DesktopToDoUtilityBar windowWidth={windowWidth} />
                 </Suspense>

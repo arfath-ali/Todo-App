@@ -490,7 +490,7 @@ const Profile = () => {
                     />
                   </button>
                 ) : (
-                  <button className="flex cursor-pointer justify-center gap-2 rounded-[100px] bg-white px-3 pt-2 pb-1 font-bold text-white dark:bg-gray-700">
+                  <button className="flex cursor-pointer justify-center gap-2 rounded-[100px] bg-gray-300 px-3 pt-2 pb-1 font-bold hover:bg-gray-400 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700">
                     Edit
                     <img
                       src={theme === 'dark' ? EditIconDark : EditIconLight}

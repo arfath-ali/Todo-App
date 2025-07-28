@@ -14,7 +14,7 @@ const MobileToDoUtilityBar = ({ windowWidth }) => {
 
   return (
     <>
-      <div className="mt-2 flex items-center justify-between rounded-[5px] min-h-[58px] bg-gray-50 px-5 py-4 dark:bg-gray-900">
+      <div className="shadow-custom-light dark:shadow-custom-dark mt-2 flex min-h-[58px] items-center justify-between rounded-[5px] bg-gray-50 px-5 py-4 dark:bg-gray-900">
         {isFetchingToDos || isUserProfileLoading ? (
           <div className="flex w-full justify-center">
             <CustomSpinner />
