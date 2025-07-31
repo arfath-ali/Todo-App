@@ -2,14 +2,14 @@ import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import { useUserProfile } from '/src/context/UserProfileContext';
-import { useToDos } from '/src/context/ToDosContext';
-import { useToDosPath } from '/src/context/ToDosPathContext';
+import { useTodos } from '/src/context/TodosContext';
+import { useTodosByPath } from '/src/context/TodosByPathContext';
 
 import axiosInstance from '/src/services/api.js';
 
-const ToDoInput = ({ windowWidth }) => {
-  const { allToDos, setAllToDos, setActiveToDos } = useToDos();
-  const { currentPath } = useToDosPath();
+const TodoInput = ({ windowWidth }) => {
+  const { setTodoOrder, setTodos } = useTodos();
+  const { currentPath } = useTodosByPath();
   const { userProfile, isSignedIn } = useUserProfile();
   const email = userProfile?.email;
   const [input, setInput] = useState('');
@@ -18,35 +18,42 @@ const ToDoInput = ({ windowWidth }) => {
     setInput(e.target.value);
   };
 
-  const addToDo = async () => {
+  const addTodo = async () => {
     if (!isSignedIn) {
-      alert('Please sign in to add a ToDo.');
+      alert('Please sign in to add a Todo.');
       return;
     }
 
     if (input.trim() === '') return;
 
-    const newToDo = {
-      toDoId: uuidv4(),
-      toDo: input,
+    const newTodo = {
+      todoId: uuidv4(),
+      todo: input,
       isChecked: false,
       createdAt: Date.now(),
+      toggledIndexInActiveList: null,
+      toggledIndexInCompletedList: null,
+      toggledTimeInActiveList: null,
+      toggledTimeInCompletedList: null,
     };
 
-    setAllToDos((prev) => [...prev, newToDo]);
-    setActiveToDos((prev) => [...prev, newToDo]);
+    setTodoOrder((prev) => ({
+      ...prev,
+      allTodos: [...(prev.allTodos || []), newTodo.todoId],
+      activeTodos: [...(prev.activeTodos || []), newTodo.todoId],
+    }));
+
+    setTodos((prev) => [...(prev || []), newTodo]);
 
     const data = JSON.stringify({
       email,
-      newToDo,
-      index: allToDos.length,
+      newTodo,
     });
 
     axiosInstance
       .post('/api/create-todo-list', {
         email,
-        newToDo,
-        index: allToDos.length,
+        newTodo,
       })
       .catch(() => {
         if (navigator.sendBeacon) {
@@ -70,7 +77,7 @@ const ToDoInput = ({ windowWidth }) => {
           onChange={handleInput}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
-              addToDo();
+              addTodo();
             }
           }}
           value={input}
@@ -78,11 +85,11 @@ const ToDoInput = ({ windowWidth }) => {
       </div>
       <button
         className="button-gradient rounded-[5px] p-1 font-bold hover:cursor-pointer dark:text-black"
-        onClick={() => addToDo()}>
+        onClick={() => addTodo()}>
         Create
       </button>
     </div>
   );
 };
 
-export default ToDoInput;
+export default TodoInput;

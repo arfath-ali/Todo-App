@@ -94,7 +94,7 @@ const ProfilePictureUploadModal = ({
       <div className="flex items-center justify-between gap-2">
         <div className="relative h-32 w-32 overflow-hidden rounded-full">
           <img
-            src={previewImage || profilePictureURL}
+            src={previewImage || profilePictureURL || null}
             className="h-full w-full object-cover"
             alt="Profile Picture"
           />

@@ -1,22 +1,32 @@
 import { useUserProfile } from '/src/context/UserProfileContext';
-import { useToDos } from '/src/context/ToDosContext';
-import { useToDosPath } from '/src/context/ToDosPathContext';
+import { useTodos } from '/src/context/TodosContext';
+import { useTodosByPath } from '/src/context/TodosByPathContext';
 
 import axiosInstance from '/src/services/api.js';
 
 const ClearCompletedButton = ({ windowWidth }) => {
-  const { allToDos, completedToDos, setUpdatedToDos } = useToDos();
-  const { currentPath } = useToDosPath();
+  const { setTodos, allTodos, completedTodos, setTodoOrder } = useTodos();
+  const { currentPath } = useTodosByPath();
   const { userProfile } = useUserProfile();
   const email = userProfile?.email;
 
   const clearCompletedTasks = () => {
-    const remainingTasks = allToDos.filter((item) => !item.isChecked);
-    const completedTasks = allToDos.filter((item) => item.isChecked);
+    const remainingTasks = allTodos.filter((item) => !item.isChecked);
+    const completedTasks = allTodos.filter((item) => item.isChecked);
 
-    setUpdatedToDos([...remainingTasks]);
+    setTodos(remainingTasks);
 
-    const completedTasksIds = completedTasks.map((task) => task.toDoId);
+    const remainingTasksIds = remainingTasks.map((task) => task.todoId);
+    const completedTasksIds = completedTasks.map((task) => task.todoId);
+
+    setTodoOrder((prev) => {
+      return {
+        ...prev,
+        allTodos: remainingTasksIds || [],
+        activeTodos: remainingTasksIds || [],
+        completedTodos: [],
+      };
+    });
 
     const data = JSON.stringify({
       email,
@@ -37,7 +47,7 @@ const ClearCompletedButton = ({ windowWidth }) => {
   };
   return (
     <button
-      className={`button-gradient dark:text-black ${currentPath === 'active' || completedToDos.length === 0 ? 'invisible' : 'block'} text-very-dark-blue app-text-medium rounded-[5px] p-1.5 font-bold hover:cursor-pointer`}
+      className={`button-gradient dark:text-black ${currentPath === 'active' || completedTodos.length === 0 ? 'invisible' : 'block'} text-very-dark-blue app-text-medium rounded-[5px] p-1.5 font-bold hover:cursor-pointer`}
       onClick={clearCompletedTasks}>
       {windowWidth < 1440 ? 'Clear' : 'Clear Completed'}
     </button>

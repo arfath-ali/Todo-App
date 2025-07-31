@@ -4,11 +4,11 @@ import SignUp from '/src/pages/auth/SignUp';
 import SignIn from '/src/pages/auth/SignIn';
 import ForgetPassword from '/src/pages/auth/ForgetPassword';
 import ResetPassword from '/src/pages/auth/ResetPassword';
-import TodoItems from '/src/pages/todo/ToDoItems';
+import TodoItems from '/src/pages/todo/TodoItems';
 import Profile from '/src/pages/profile/Profile';
 import NotFound from '/src/pages/misc/NotFound';
 
-const ToDoAppRoutes = ({}) => {
+const TodoAppRoutes = ({}) => {
   return (
     <Routes>
       <Route path="/" element={<Navigate to="/all" replace />} />
@@ -34,4 +34,4 @@ const ToDoAppRoutes = ({}) => {
   );
 };
 
-export default ToDoAppRoutes;
+export default TodoAppRoutes;

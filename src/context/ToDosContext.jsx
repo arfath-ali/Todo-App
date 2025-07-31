@@ -2,125 +2,104 @@ import { useState, useEffect, createContext, useContext } from 'react';
 
 import { useUserProfile } from './UserProfileContext';
 
-import axiosInstance from '../services/api.js';
+import axiosInstance from '/src/services/api.js';
 
-const ToDosContext = createContext();
+const TodosContext = createContext();
 
-export function ToDosProvider({ children }) {
+export function TodosProvider({ children }) {
   const { userProfile } = useUserProfile() || {};
   const email = userProfile?.email;
 
-  const [allToDos, setAllToDos] = useState([]);
-  const [activeToDos, setActiveToDos] = useState([]);
-  const [completedToDos, setCompletedToDos] = useState([]);
-  const [updatedToDos, setUpdatedToDos] = useState([]);
-  const [reorderedToDoList, setReorderedToDoList] = useState({
+  const [todoOrder, setTodoOrder] = useState({
+    allTodos: [],
+    activeTodos: [],
+    completedTodos: [],
+  });
+
+  const [todos, setTodos] = useState([]);
+
+  const [allTodos, setAllTodos] = useState([]);
+  const [activeTodos, setActiveTodos] = useState([]);
+  const [completedTodos, setCompletedTodos] = useState([]);
+  const [reorderedTodoList, setReorderedTodoList] = useState({
     list: [],
     path: '',
   });
-  const [isFetchingToDos, setIsFetchingToDos] = useState(false);
+  const [isFetchingTodos, setIsFetchingTodos] = useState(false);
 
-  const fetchToDoList = async () => {
-    setIsFetchingToDos(true);
+  const fetchTodoList = async () => {
+    setIsFetchingTodos(true);
     try {
-      const toDoOrderRes = await axiosInstance.post('/api/get-todo-order', {
+      const todoOrderRes = await axiosInstance.post('/api/get-todo-order', {
         email,
       });
-      const toDoListRes = await axiosInstance.post('/api/get-todo-list', {
+      const todoListRes = await axiosInstance.post('/api/get-todo-list', {
         email,
       });
 
-      const toDoOrder = toDoOrderRes.data?.result || {};
-      const toDoList = toDoListRes.data?.result || [];
+      const todoOrderDoc = todoOrderRes.data?.result || {};
+      const todosDoc = todoListRes.data?.result || [];
 
-      const idToToDoMap = new Map(toDoList.map((toDo) => [toDo.toDoId, toDo]));
-
-      const getOrderedList = (ids) =>
-        (ids || []).map((id) => idToToDoMap.get(id)).filter(Boolean);
-
-      const all = getOrderedList(toDoOrder.allToDos || []);
-      const active = getOrderedList(toDoOrder.activeToDos || []);
-      const completed = getOrderedList(toDoOrder.completedToDos || []);
-
-      setAllToDos(all);
-      setActiveToDos(active);
-      setCompletedToDos(completed);
+      setTodoOrder(todoOrderDoc);
+      setTodos(todosDoc);
     } catch (error) {
       console.log('Error during fetching todos: ', error);
     } finally {
-      setIsFetchingToDos(false);
+      setIsFetchingTodos(false);
     }
   };
 
   useEffect(() => {
-    const updatedMap = new Map(updatedToDos.map((toDo) => [toDo.toDoId, toDo]));
+    const idToTodoMap = new Map(todos.map((todo) => [todo.todoId, todo]));
 
-    setAllToDos([...updatedToDos]);
+    const getOrderedList = (ids) =>
+      (ids || []).map((id) => idToTodoMap.get(id)).filter(Boolean);
 
-    setActiveToDos((prev) => [
-      ...prev.filter(
-        (toDo) =>
-          updatedMap.has(toDo.toDoId) && !updatedMap.get(toDo.toDoId).isChecked,
-      ),
-      ...updatedToDos.filter(
-        (toDo) =>
-          !prev.find((p) => p.toDoId === toDo.toDoId) && !toDo.isChecked,
-      ),
-    ]);
-
-    setCompletedToDos((prev) => [
-      ...prev.filter(
-        (toDo) =>
-          updatedMap.has(toDo.toDoId) && updatedMap.get(toDo.toDoId).isChecked,
-      ),
-      ...updatedToDos.filter(
-        (toDo) => !prev.find((p) => p.toDoId === toDo.toDoId) && toDo.isChecked,
-      ),
-    ]);
-  }, [updatedToDos]);
+    setAllTodos(getOrderedList(todoOrder.allTodos || []));
+    setActiveTodos(getOrderedList(todoOrder.activeTodos || []));
+    setCompletedTodos(getOrderedList(todoOrder.completedTodos || []));
+  }, [todos, todoOrder]);
 
   useEffect(() => {
-    const { list, path } = reorderedToDoList;
-
-    if (path === 'all') setAllToDos([...list]);
-    else if (path === 'active') setActiveToDos([...list]);
-    else if (path === 'completed') setCompletedToDos([...list]);
-  }, [reorderedToDoList]);
+    setAllTodos(reorderedTodoList);
+  }, [reorderedTodoList]);
 
   useEffect(() => {
     if (!email) return;
 
-    fetchToDoList();
+    fetchTodoList();
   }, [email]);
 
-  function clearToDos() {
-    setAllToDos([]);
-    setActiveToDos([]);
-    setCompletedToDos([]);
-    setUpdatedToDos([]);
-    setReorderedToDoList([]);
+  function clearTodos() {
+    setAllTodos([]);
+    setActiveTodos([]);
+    setCompletedTodos([]);
+    setReorderedTodoList([]);
   }
 
   return (
-    <ToDosContext.Provider
+    <TodosContext.Provider
       value={{
-        allToDos,
-        setAllToDos,
-        activeToDos,
-        setActiveToDos,
-        completedToDos,
-        setCompletedToDos,
-        fetchToDoList,
-        setUpdatedToDos,
-        setReorderedToDoList,
-        isFetchingToDos,
-        clearToDos,
+        todoOrder,
+        setTodoOrder,
+        todos,
+        setTodos,
+        allTodos,
+        setAllTodos,
+        activeTodos,
+        setActiveTodos,
+        completedTodos,
+        setCompletedTodos,
+        fetchTodoList,
+        setReorderedTodoList,
+        isFetchingTodos,
+        clearTodos,
       }}>
       {children}
-    </ToDosContext.Provider>
+    </TodosContext.Provider>
   );
 }
 
-export function useToDos() {
-  return useContext(ToDosContext);
+export function useTodos() {
+  return useContext(TodosContext);
 }

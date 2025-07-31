@@ -1,6 +1,6 @@
 import { useUserProfile } from '/src/context/UserProfileContext';
 import { useTheme } from '/src/context/ThemeContext';
-import { useToDosPath } from '/src/context/ToDosPathContext';
+import { useTodosByPath } from '/src/context/TodosByPathContext';
 import { useUsername } from '/src/context/UsernameContext';
 import { useSignOut } from '/src/context/SignOutContext';
 import { useProfilePicture } from '/src/context/ProfilePictureContext';
@@ -8,7 +8,7 @@ import { useProfilePicture } from '/src/context/ProfilePictureContext';
 const useClearUserData = () => {
   const { clearUserProfile } = useUserProfile();
   const { clearTheme } = useTheme();
-  const { clearToDosPath } = useToDosPath();
+  const { clearTodosPath } = useTodosByPath();
   const { clearUsername } = useUsername();
   const { clearSignOut } = useSignOut();
   const { clearProfilePicture } = useProfilePicture();
@@ -16,7 +16,7 @@ const useClearUserData = () => {
   const clearAllUserData = () => {
     clearUserProfile();
     clearTheme();
-    clearToDosPath();
+    clearTodosPath();
     clearUsername();
     clearSignOut();
     clearProfilePicture();

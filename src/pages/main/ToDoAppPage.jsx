@@ -1,26 +1,30 @@
 import { Suspense, lazy } from 'react';
 import { useTheme } from '/src/context/ThemeContext';
-import { useToDosPath } from '/src/context/ToDosPathContext';
+import { useTodosByPath } from '/src/context/TodosByPathContext';
 import { useWindowSize } from '/src/hooks/useWindowSize';
 
-const WelcomeHeader = lazy(() => import('./components/header/WelcomeHeader'));
-const Header = lazy(() => import('./components/header/Header'));
-const ToDoInput = lazy(() => import('./components/todo-controls/ToDoInput'));
-const DesktopToDoUtilityBar = lazy(
-  () => import('./components/todo-controls/DesktopToDoUtilityBar.jsx'),
+const WelcomeHeader = lazy(
+  () => import('./components/header/WelcomeHeader.jsx'),
 );
-const ToDoAppRoutes = lazy(() => import('./routes/ToDoAppRoutes'));
-const MobileToDoUtilityBar = lazy(
-  () => import('./components/todo-controls/MobileToDoUtilityBar.jsx'),
+const Header = lazy(() => import('./components/header/Header.jsx'));
+const TodoInput = lazy(
+  () => import('./components/todo-controls/TodoInput.jsx'),
+);
+const DesktopTodoUtilityBar = lazy(
+  () => import('./components/todo-controls/DesktopTodoUtilityBar.jsx'),
+);
+const TodoAppRoutes = lazy(() => import('./routes/TodoAppRoutes.jsx'));
+const MobileTodoUtilityBar = lazy(
+  () => import('./components/todo-controls/MobileTodoUtilityBar.jsx'),
 );
 
-const ToDoAppPage = () => {
+const TodoAppPage = () => {
   const windowWidth = useWindowSize();
   const { theme } = useTheme();
-  const { currentPath, toDos } = useToDosPath();
+  const { currentPath, displayTodos } = useTodosByPath() || {};
 
   const isAuthPage = currentPath === 'sign-in' || currentPath === 'sign-up';
-  const isToDoPage =
+  const isTodoPage =
     currentPath === 'all' ||
     currentPath === 'active' ||
     currentPath === 'completed';
@@ -32,7 +36,7 @@ const ToDoAppPage = () => {
           <div>
             <Suspense fallback={null}>
               <WelcomeHeader />
-              <ToDoAppRoutes />
+              <TodoAppRoutes />
             </Suspense>
           </div>
         </div>
@@ -42,34 +46,34 @@ const ToDoAppPage = () => {
         currentPath,
       ) && (
         <Suspense fallback={null}>
-          <ToDoAppRoutes />
+          <TodoAppRoutes />
         </Suspense>
       )}
 
-      {isToDoPage && (
+      {isTodoPage && (
         <div
           className={`${
             theme === 'dark' ? 'body-dark-mode' : 'body-light-mode'
           } tablet:max-w-none mobile:max-w-[48rem] relative mx-auto h-screen max-w-[20rem] min-w-[20rem] overflow-hidden pr-6 pb-10 pl-[1.625rem]`}>
           <Suspense fallback={null}>
-            <Header windowWidth={windowWidth} />
+            <Header />
           </Suspense>
 
           <main className="desktop:max-w-[33.75rem] relative z-10 mx-auto max-w-[30rem]">
             <Suspense fallback={null}>
-              <ToDoInput windowWidth={windowWidth} />
+              <TodoInput windowWidth={windowWidth} />
             </Suspense>
 
             {windowWidth >= 768 && (
               <div className="shadow-custom-light dark:shadow-custom-dark desktop:shadow-none desktop:dark:shadow-none">
                 <Suspense fallback={null}>
-                  <DesktopToDoUtilityBar windowWidth={windowWidth} />
+                  <DesktopTodoUtilityBar windowWidth={windowWidth} />
                 </Suspense>
               </div>
             )}
 
             <div
-              className={`${toDos.length !== 0 ? 'shadow-custom-light dark:shadow-custom-dark' : ''} overflow-y-scroll rounded-[5px] ${
+              className={`${displayTodos.length !== 0 ? 'shadow-custom-light dark:shadow-custom-dark' : ''} overflow-y-scroll rounded-[5px] ${
                 windowWidth >= 768
                   ? currentPath === 'all'
                     ? 'mt-2'
@@ -79,14 +83,14 @@ const ToDoAppPage = () => {
                     : 'mt-16'
               } tablet:max-h-[65vh] tablet:mt-4 mobile:max-h-[64vh] max-h-[61.5vh]`}>
               <Suspense fallback={null}>
-                <ToDoAppRoutes />
+                <TodoAppRoutes />
               </Suspense>
             </div>
 
             {windowWidth < 768 && (
               <div>
                 <Suspense fallback={null}>
-                  <MobileToDoUtilityBar windowWidth={windowWidth} />
+                  <MobileTodoUtilityBar windowWidth={windowWidth} />
                 </Suspense>
               </div>
             )}
@@ -99,4 +103,4 @@ const ToDoAppPage = () => {
   );
 };
 
-export default ToDoAppPage;
+export default TodoAppPage;

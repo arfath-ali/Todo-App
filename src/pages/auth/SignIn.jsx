@@ -18,7 +18,7 @@ import googleIcon from '/src/assets/images/icons/icon-google.svg';
 
 const SignIn = () => {
   useEffect(() => {
-    document.title = 'Sign In – ToDo App';
+    document.title = 'Sign In – Todo App';
   }, []);
 
   const location = useLocation();

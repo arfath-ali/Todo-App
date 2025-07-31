@@ -1,54 +1,54 @@
 import { useState, useEffect } from 'react';
 
-import { useToDos } from '/src/context/ToDosContext.jsx';
-import { useToDosPath } from '/src/context/ToDosPathContext.jsx';
+import { useTodos } from '/src/context/TodosContext.jsx';
+import { useTodosByPath } from '/src/context/TodosByPathContext.jsx';
 import { useUserProfile } from '/src/context/UserProfileContext.jsx';
 
 import axiosInstance from '/src/services/api.js';
 
-import CreateToDoItem from './components/CreateToDoItem.jsx';
+import CreateTodoItem from './components/CreateTodoItem.jsx';
 
 const TodoItems = () => {
-  const {
-    allToDos,
-    activeToDos,
-    completedToDos,
-    setUpdatedToDos,
-    setReorderedToDoList,
-  } = useToDos();
-  const { currentPath, toDos } = useToDosPath();
+  const { setTodoOrder, todos, setTodos, allTodos, setReorderedTodoList } =
+    useTodos();
+  const { currentPath, displayTodos } = useTodosByPath();
   const { userProfile } = useUserProfile();
   const email = userProfile?.email;
 
   const [draggedId, setDraggedId] = useState('');
 
-  let updatedToDoList, data;
-
   useEffect(() => {
-    document.title = 'All ToDos – ToDo App';
+    const pageName =
+      currentPath.charAt(0).toUpperCase() + currentPath.slice(1).toLowerCase();
+    document.title = [`${pageName} Todos – Todo App`];
   }, []);
 
   const handleDragAndDrop = (droppedId) => {
     if (draggedId === null || draggedId === droppedId) return;
 
-    const currentToDosIds = toDos.map((toDo) => toDo.toDoId);
+    const currentTodosIds = allTodos.map((todo) => todo.todoId);
 
-    const draggedIndex = currentToDosIds.findIndex((id) => id === draggedId);
-    const droppedIndex = currentToDosIds.findIndex((id) => id === droppedId);
+    const draggedIndex = currentTodosIds.findIndex((id) => id === draggedId);
+    const droppedIndex = currentTodosIds.findIndex((id) => id === droppedId);
 
     if (draggedIndex === -1 || droppedIndex === -1) return;
 
-    const updatedToDosIds = [...currentToDosIds];
-    updatedToDosIds[draggedIndex] = droppedId;
-    updatedToDosIds[droppedIndex] = draggedId;
+    const updatedTodosIds = [...currentTodosIds];
+    updatedTodosIds[draggedIndex] = droppedId;
+    updatedTodosIds[droppedIndex] = draggedId;
 
-    updatedToDoList = updatedToDosIds.map((id) =>
-      toDos.find((toDo) => toDo.toDoId === id),
+    setTodoOrder((prev) => ({
+      ...prev,
+      allTodos: updatedTodosIds,
+    }));
+
+    const updatedTodoList = updatedTodosIds.map((id) =>
+      displayTodos.find((todo) => todo.todoId === id),
     );
 
-    setReorderedToDoList({ list: [...updatedToDoList], path: currentPath });
+    setReorderedTodoList(updatedTodoList);
 
-    data = JSON.stringify({
+    const data = JSON.stringify({
       currentPath,
       email,
       draggedId,
@@ -72,28 +72,43 @@ const TodoItems = () => {
     setDraggedId('');
   };
 
-  const handleToggleToDoCheckedStatus = (id) => {
-    updatedToDoList = allToDos.map((toDo) =>
-      toDo.toDoId === id ? { ...toDo, isChecked: !toDo.isChecked } : toDo,
+  const handleToggleTodoCheckedStatus = (toggledTodoId) => {
+    const toggledTodoItem = todos.find((todo) => todo.todoId === toggledTodoId);
+    const isChecked = !toggledTodoItem.isChecked;
+
+    const sourceKey = isChecked ? 'active' : 'completed';
+    const targetKey = isChecked ? 'completed' : 'active';
+
+    setTodos((prev) =>
+      prev.map((todo) =>
+        todo.todoId === toggledTodoId
+          ? { ...todo, isChecked: !todo.isChecked }
+          : todo,
+      ),
     );
 
-    setUpdatedToDos([...updatedToDoList]);
+    setTodoOrder((prev) => ({
+      ...prev,
+      [`${sourceKey}Todos`]: (prev[`${sourceKey}Todos`] || []).filter(
+        (todoId) => todoId !== toggledTodoId,
+      ),
+      [`${targetKey}Todos`]: [
+        ...(prev[`${targetKey}Todos`] || []),
+        toggledTodoId,
+      ],
+    }));
 
-    const updatedToDoItem = updatedToDoList.find((item) => item.toDoId === id);
-
-    if (!updatedToDoItem) return;
-
-    data = JSON.stringify({
+    const data = JSON.stringify({
       email,
-      toggledId: updatedToDoItem.toDoId,
-      isChecked: updatedToDoItem.isChecked,
+      toggledTodoId: toggledTodoItem.todoId,
+      isChecked,
     });
 
     axiosInstance
       .post('/api/update-todo-status', {
         email,
-        toggledId: updatedToDoItem.toDoId,
-        isChecked: updatedToDoItem.isChecked,
+        toggledTodoId: toggledTodoItem.todoId,
+        isChecked,
       })
       .catch(() => {
         if (navigator.sendBeacon) {
@@ -103,20 +118,35 @@ const TodoItems = () => {
       });
   };
 
-  const handleClearToDoById = (id) => {
-    updatedToDoList = allToDos.filter((toDo) => toDo.toDoId !== id);
+  const handleClearTodoById = (deletedTodoId) => {
+    const updatedTodos = todos.filter((todo) => todo.todoId !== deletedTodoId);
 
-    setUpdatedToDos([...updatedToDoList]);
+    setTodoOrder((prev) => {
+      return {
+        ...prev,
+        allTodos: updatedTodos.map((todo) => todo.todoId) || [],
+        activeTodos:
+          updatedTodos
+            .filter((todo) => !todo.isChecked)
+            .map((todo) => todo.todoId) || [],
+        completedTodos:
+          updatedTodos
+            .filter((todo) => todo.isChecked)
+            .map((todo) => todo.todoId) || [],
+      };
+    });
 
-    data = JSON.stringify({
+    setTodos(updatedTodos);
+
+    const data = JSON.stringify({
       email,
-      deletedId: id,
+      deletedId: deletedTodoId,
     });
 
     axiosInstance
       .post('/api/delete-todo-item', {
         email,
-        deletedId: id,
+        deletedId: deletedTodoId,
       })
       .catch(() => {
         if (navigator.sendBeacon) {
@@ -128,18 +158,20 @@ const TodoItems = () => {
 
   return (
     <ul>
-      {toDos.map((item, index) => (
-        <CreateToDoItem
-          key={item.toDoId}
-          input={item.toDo}
-          id={item.toDoId}
-          isChecked={item.isChecked}
-          setDraggedId={setDraggedId}
-          handleDrop={handleDragAndDrop}
-          toggleToDoCheckedStatus={handleToggleToDoCheckedStatus}
-          clearToDoById={handleClearToDoById}
-        />
-      ))}
+      {Array.isArray(displayTodos) &&
+        displayTodos.map((item) => (
+          <CreateTodoItem
+            currentPath={currentPath}
+            key={item.todoId}
+            input={item.todo}
+            id={item.todoId}
+            isChecked={item.isChecked}
+            setDraggedId={setDraggedId}
+            handleDrop={handleDragAndDrop}
+            handleToggleTodoCheckedStatus={handleToggleTodoCheckedStatus}
+            clearTodoById={handleClearTodoById}
+          />
+        ))}
     </ul>
   );
 };

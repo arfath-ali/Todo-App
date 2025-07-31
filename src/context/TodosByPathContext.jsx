@@ -1,67 +1,67 @@
 import { useState, useEffect, createContext, useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { useToDos } from './ToDosContext';
+import { useTodos } from './TodosContext';
 
-const ToDosPathContext = createContext();
+const TodosByPathContext = createContext();
 
-export function ToDosPathProvider({ children }) {
+export function TodosByPathProvider({ children }) {
   const location = useLocation();
-  const { allToDos, activeToDos, completedToDos } = useToDos();
+  const { allTodos, activeTodos, completedTodos } = useTodos();
   const [currentPath, setCurrentPath] = useState('');
-  const [toDos, setToDos] = useState([]);
+  const [displayTodos, setDisplayTodos] = useState([]);
 
   useEffect(() => {
     const path = location.pathname;
 
     if (path === '/sign-in') {
       setCurrentPath('sign-in');
-      setToDos([]);
+      setDisplayTodos([]);
     } else if (path === '/forget-password') {
       setCurrentPath('forget-password');
-      setToDos([]);
+      setDisplayTodos([]);
     } else if (path === '/reset-password') {
       setCurrentPath('reset-password');
-      setToDos([]);
+      setDisplayTodos([]);
     } else if (path === '/sign-up') {
       setCurrentPath('sign-up');
-      setToDos([]);
+      setDisplayTodos([]);
     } else if (path === '/all') {
       setCurrentPath('all');
-      setToDos([...allToDos]);
+      setDisplayTodos(allTodos);
     } else if (path === '/active') {
       setCurrentPath('active');
-      setToDos([...activeToDos]);
+      setDisplayTodos(activeTodos);
     } else if (path === '/completed') {
       setCurrentPath('completed');
-      setToDos([...completedToDos]);
+      setDisplayTodos(completedTodos);
     } else if (path === '/profile') {
       setCurrentPath('profile');
-      setToDos([]);
+      setDisplayTodos([]);
     } else {
       setCurrentPath('not-found');
-      setToDos([]);
+      setDisplayTodos([]);
     }
-  }, [location, allToDos, activeToDos, completedToDos]);
+  }, [location, allTodos, activeTodos, completedTodos]);
 
-  function clearToDosPath() {
-    setToDos([]);
+  function clearTodosPath() {
+    setDisplayTodos([]);
     setCurrentPath('');
   }
 
   return (
-    <ToDosPathContext.Provider
+    <TodosByPathContext.Provider
       value={{
-        toDos,
-        setToDos,
+        displayTodos,
+        setDisplayTodos,
         currentPath,
-        clearToDosPath,
+        clearTodosPath,
       }}>
       {children}
-    </ToDosPathContext.Provider>
+    </TodosByPathContext.Provider>
   );
 }
 
-export function useToDosPath() {
-  return useContext(ToDosPathContext);
+export function useTodosByPath() {
+  return useContext(TodosByPathContext);
 }

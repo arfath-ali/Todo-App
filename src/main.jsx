@@ -3,8 +3,8 @@ import { createRoot } from 'react-dom/client';
 import { HashRouter as Router } from 'react-router-dom';
 
 import { ThemeProvider } from './context/ThemeContext';
-import { ToDosProvider } from './context/ToDosContext';
-import { ToDosPathProvider } from './context/ToDosPathContext';
+import { TodosProvider } from './context/TodosContext';
+import { TodosByPathProvider } from './context/TodosByPathContext';
 import { UserProfileProvider } from './context/UserProfileContext';
 import { ProfilePictureProvider } from './context/ProfilePictureContext';
 import { UsernameProvider } from './context/UsernameContext';
@@ -19,15 +19,15 @@ createRoot(document.getElementById('root')).render(
       <UserProfileProvider>
         <SignOutProvider>
           <ThemeProvider>
-            <ToDosProvider>
-              <ToDosPathProvider>
+            <TodosProvider>
+              <TodosByPathProvider>
                 <ProfilePictureProvider>
                   <UsernameProvider>
                     <App />
                   </UsernameProvider>
                 </ProfilePictureProvider>
-              </ToDosPathProvider>
-            </ToDosProvider>
+              </TodosByPathProvider>
+            </TodosProvider>
           </ThemeProvider>
         </SignOutProvider>
       </UserProfileProvider>

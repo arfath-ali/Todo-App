@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 
-const ToDoAppNavLinks = ({ navLinkName }) => {
+const TodoAppNavLinks = ({ navLinkName }) => {
   return (
     <>
       <NavLink
@@ -22,4 +22,4 @@ const ToDoAppNavLinks = ({ navLinkName }) => {
   );
 };
 
-export default ToDoAppNavLinks;
+export default TodoAppNavLinks;

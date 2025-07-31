@@ -18,7 +18,7 @@ import hidePasswordIconDark from '/src/assets/images/icons/icon-password-hide-da
 
 const SignUp = () => {
   useEffect(() => {
-    document.title = 'Sign Up – ToDo App';
+    document.title = 'Sign Up – Todo App';
   }, []);
 
   const navigate = useNavigate();

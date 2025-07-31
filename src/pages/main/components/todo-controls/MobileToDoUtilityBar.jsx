@@ -1,27 +1,27 @@
-import { useToDos } from '/src/context/ToDosContext';
-import { useToDosPath } from '/src/context/ToDosPathContext';
+import { useTodos } from '/src/context/TodosContext';
+import { useTodosByPath } from '/src/context/TodosByPathContext';
 import { useUserProfile } from '/src/context/UserProfileContext';
 
-import ToDosCount from './ToDosCount';
-import ClearCompletedButton from './ClearCompletedButton';
-import ToDoAppNavigation from '../navigation/ToDoAppNavigation';
+import TodosCount from './TodosCount.jsx';
+import ClearCompletedButton from './ClearCompletedButton.jsx';
+import TodoAppNavigation from '../navigation/TodoAppNavigation.jsx';
 import CustomSpinner from './CustomSpinner.jsx';
 
-const MobileToDoUtilityBar = ({ windowWidth }) => {
-  const { isFetchingToDos } = useToDos();
-  const { toDos } = useToDosPath();
+const MobileTodoUtilityBar = ({ windowWidth }) => {
+  const { isFetchingTodos } = useTodos();
+  const { displayTodos } = useTodosByPath();
   const { isUserProfileLoading } = useUserProfile();
 
   return (
     <>
       <div className="shadow-custom-light dark:shadow-custom-dark mt-2 flex min-h-[58px] items-center justify-between rounded-[5px] bg-gray-50 px-5 py-4 dark:bg-gray-900">
-        {isFetchingToDos || isUserProfileLoading ? (
+        {isFetchingTodos || isUserProfileLoading ? (
           <div className="flex w-full justify-center">
             <CustomSpinner />
           </div>
         ) : (
           <>
-            <ToDosCount toDos={toDos} />
+            <TodosCount todos={displayTodos} />
             <ClearCompletedButton windowWidth={windowWidth} />
           </>
         )}
@@ -32,10 +32,10 @@ const MobileToDoUtilityBar = ({ windowWidth }) => {
         style={{
           paddingBottom: 'calc(16px + env(safe-area-inset-bottom))',
         }}>
-        <ToDoAppNavigation />
+        <TodoAppNavigation />
       </div>
     </>
   );
 };
 
-export default MobileToDoUtilityBar;
+export default MobileTodoUtilityBar;

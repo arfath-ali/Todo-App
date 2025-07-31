@@ -1,5 +1,5 @@
-const ToDosCount = ({ toDos = [] }) => {
-  const count = toDos?.length || 0;
+const TodosCount = ({ todos = [] }) => {
+  const count = todos?.length || 0;
 
   return (
     <div className="app-text-small">
@@ -17,4 +17,4 @@ const ToDosCount = ({ toDos = [] }) => {
   );
 };
 
-export default ToDosCount;
+export default TodosCount;

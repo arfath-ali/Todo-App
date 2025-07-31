@@ -1,34 +1,34 @@
-import { useToDos } from '/src/context/ToDosContext';
-import { useToDosPath } from '/src/context/ToDosPathContext';
+import { useTodos } from '/src/context/TodosContext';
+import { useTodosByPath } from '/src/context/TodosByPathContext';
 import { useUserProfile } from '/src/context/UserProfileContext';
 
-import ToDosCount from './ToDosCount';
-import ClearCompletedButton from './ClearCompletedButton';
-import ToDoAppNavigation from '../navigation/ToDoAppNavigation';
+import TodosCount from './TodosCount.jsx';
+import ClearCompletedButton from './ClearCompletedButton.jsx';
+import TodoAppNavigation from '../navigation/TodoAppNavigation.jsx';
 import CustomSpinner from './CustomSpinner.jsx';
 
-const DesktopToDoUtilityBar = ({ windowWidth }) => {
-  const { isFetchingToDos } = useToDos();
-  const { currentPath, toDos } = useToDosPath();
+const DesktopTodoUtilityBar = ({ windowWidth }) => {
+  const { isFetchingTodos } = useTodos();
+  const { currentPath,displayTodos } = useTodosByPath();
   const { isUserProfileLoading } = useUserProfile();
 
   return (
     <div
       className={`flex min-h-[62px] items-center ${
-        isFetchingToDos || isUserProfileLoading
+        isFetchingTodos || isUserProfileLoading
           ? 'justify-center'
           : 'justify-between'
       } rounded-[5px] bg-gray-50 py-4 pr-5 pl-6 dark:bg-gray-900 ${
         currentPath === 'all' ? 'mt-4' : 'mt-[4.375rem]'
       }`}>
-      {isFetchingToDos || isUserProfileLoading ? (
+      {isFetchingTodos || isUserProfileLoading ? (
         <CustomSpinner />
       ) : (
         <>
-          <ToDosCount toDos={toDos} />
+          <TodosCount todos={displayTodos} />
 
           <div className="flex max-w-[33.75rem] items-center justify-center rounded-[5px]">
-            <ToDoAppNavigation />
+            <TodoAppNavigation />
           </div>
 
           <ClearCompletedButton windowWidth={windowWidth} />
@@ -38,4 +38,4 @@ const DesktopToDoUtilityBar = ({ windowWidth }) => {
   );
 };
 
-export default DesktopToDoUtilityBar;
+export default DesktopTodoUtilityBar;

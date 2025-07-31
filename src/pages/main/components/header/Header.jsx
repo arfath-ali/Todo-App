@@ -15,7 +15,7 @@ import DarkThemeIcon from '/src/assets/images/icons/icon-moon.svg';
 import UserIcon from '/src/assets/images/icons/icon-user.png';
 import SignOutIcon from '/src/assets/images/icons/icon-sign-out.png';
 
-const Header = ({ windowWidth }) => {
+const Header = () => {
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
   const { userProfile, isSignedIn, isUserProfileLoading } = useUserProfile();
@@ -54,8 +54,8 @@ const Header = ({ windowWidth }) => {
 
   return (
     <>
-      <header className="desktop:max-w-[33.75rem] relative z-10 mx-auto flex max-w-[30rem] items-center justify-between pt-12 pb-10">
-        <h1 className="app-text-large text-white uppercase">todo</h1>
+      <header className="desktop:max-w-[33.75rem] relative z-10 mx-auto mt-2 flex max-w-[30rem] items-center justify-between pt-11 pb-9">
+        <h1 className="app-text-large mt-2 text-white uppercase">todo</h1>
 
         <img
           src={theme === 'dark' ? LightThemeIcon : DarkThemeIcon}
@@ -65,7 +65,7 @@ const Header = ({ windowWidth }) => {
         />
       </header>
       <div
-        className={`desktop:fixed desktop:top-4 absolute top-3 right-6 z-50`}
+        className={`desktop:fixed desktop:top-4 tablet:right-6 absolute top-3 right-5 z-50`}
         ref={menuRef}
         onClick={() => {
           setDisplayMenu((prev) => !prev);
@@ -77,7 +77,7 @@ const Header = ({ windowWidth }) => {
         ) : isSignedIn ? (
           <img
             src={profileImageURL}
-            className="tablet:h-10 tablet:w-10 h-5 w-5 rounded-[100px] hover:cursor-pointer"
+            className="tablet:h-10 tablet:w-10 h-8 w-8 rounded-[100px] hover:cursor-pointer"
             alt="User Profile"
           />
         ) : (
@@ -94,7 +94,7 @@ const Header = ({ windowWidth }) => {
       </div>
 
       {displayMenu && (
-        <div className="tablet:top-16 app-text-medium absolute top-10 right-2 z-20 flex flex-col rounded-[5px] bg-white dark:bg-gray-700 dark:text-gray-400">
+        <div className="tablet:top-16 app-text-medium absolute top-13 right-2 z-20 flex flex-col rounded-[5px] bg-white dark:bg-gray-700 dark:text-gray-400">
           <NavLink
             to="/profile"
             className="px-2 py-2.5 text-center dark:text-gray-300"

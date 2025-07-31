@@ -35,7 +35,7 @@ const ResetPassword = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   useEffect(() => {
-    document.title = 'Reset Password – ToDo App';
+    document.title = 'Reset Password – Todo App';
   }, []);
 
   const [searchParams] = useSearchParams();

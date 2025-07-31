@@ -6,7 +6,7 @@ import axiosInstance from '/src/services/api.js';
 
 const ForgetPassword = () => {
   useEffect(() => {
-    document.title = 'Forgot Password – ToDo App';
+    document.title = 'Forgot Password – Todo App';
   }, []);
 
   const navigate = useNavigate();

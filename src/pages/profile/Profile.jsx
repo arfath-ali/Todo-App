@@ -95,7 +95,7 @@ const Profile = () => {
 
   useEffect(() => {
     if (!wasSignedIn) navigate('/sign-in', { replace: true });
-    document.title = 'Profile – ToDo App';
+    document.title = 'Profile – Todo App';
   }, []);
 
   useEffect(() => {
@@ -330,7 +330,7 @@ const Profile = () => {
                     profileImageChanged &&
                     previewImage
                       ? previewImage
-                      : profilePictureURL
+                      : profilePictureURL || null
                   }
                   className="h-full"
                   alt="Profile Picture"
