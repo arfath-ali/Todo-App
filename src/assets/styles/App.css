@@ -281,9 +281,22 @@
         }
     }
 
+      @media (max-height: 650px) {
+        .todo-list-container {
+            max-height: 52dvh;
+        }
+    }
+
+
     @media (max-height: 600px) {
         .todo-list-container {
-            max-height: 50dvh;
+            max-height: 48dvh;
+        }
+    }
+
+    @media (max-height: 575px) {
+        .todo-list-container {
+            max-height: 45dvh;
         }
     }
 
