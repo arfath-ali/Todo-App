@@ -28,7 +28,7 @@ const MobileTodoUtilityBar = ({ windowWidth }) => {
       </div>
 
       <div
-        className="fixed bottom-0 left-1/2 flex w-full -translate-x-1/2 transform items-center justify-center"
+        className="fixed bottom-0 left-1/2 flex w-full -translate-x-1/2 transform items-center justify-center bg-gray-50 dark:bg-gray-900 p-4"
         style={{
           paddingBottom: 'calc(16px + env(safe-area-inset-bottom))',
         }}>

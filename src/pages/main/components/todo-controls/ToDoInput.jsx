@@ -73,7 +73,7 @@ const TodoInput = ({ windowWidth }) => {
         <input
           type="text"
           placeholder="Create a new todo..."
-          className="w-[12.5rem] max-w-[12.5rem] outline-none placeholder:text-black placeholder:opacity-40 hover:cursor-pointer dark:placeholder:text-gray-400"
+          className="tablet:w-[20.5rem] desktop:max-w-[24rem] desktop:w-[24rem] tablet:max-w-[20.5rem] w-[12.5rem] max-w-[12rem] outline-none placeholder:text-black placeholder:opacity-40 hover:cursor-pointer dark:placeholder:text-gray-400"
           onChange={handleInput}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {

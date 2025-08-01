@@ -72,21 +72,6 @@ const TodoAppPage = () => {
               </div>
             )}
 
-            <div
-              className={`todo-list-container ${displayTodos.length <= 0 ? 'shadow-custom-light dark:shadow-custom-dark' : ''} overflow-y-scroll rounded-[5px] ${
-                windowWidth >= 768
-                  ? currentPath === 'all'
-                    ? 'mt-2'
-                    : 'mt-21'
-                  : currentPath === 'all'
-                    ? 'mt-4'
-                    : 'mt-16'
-              } desktop:max-h-[62dvh] mb-2`}>
-              <Suspense fallback={null}>
-                <TodoAppRoutes />
-              </Suspense>
-            </div>
-
             {windowWidth < 768 && (
               <div>
                 <Suspense fallback={null}>
@@ -94,6 +79,25 @@ const TodoAppPage = () => {
                 </Suspense>
               </div>
             )}
+
+            <div
+              className={`${
+                displayTodos.length < 0
+                  ? 'shadow-custom-light dark:shadow-custom-dark'
+                  : ''
+              } rounded-[5px] ${
+                windowWidth >= 768
+                  ? currentPath === 'all'
+                    ? 'mt-2'
+                    : 'mt-21'
+                  : currentPath === 'all'
+                    ? 'mt-4'
+                    : 'mt-16'
+              } desktop:max-h-[61.5dvh] max-h-[55dvh] overflow-y-scroll`}>
+              <Suspense fallback={null}>
+                <TodoAppRoutes />
+              </Suspense>
+            </div>
           </main>
 
           <footer></footer>
