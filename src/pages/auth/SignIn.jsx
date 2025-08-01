@@ -97,9 +97,10 @@ const SignIn = () => {
   const handleGoogleSignIn = async () => {
     setGoogleSignInError('');
     setSignInError('');
-    setIsGoogleSignInLoading(true);
     try {
       const result = await signInWithPopup(auth, provider);
+
+      setIsGoogleSignInLoading(true);
       const user = result.user;
       const token = await user.getIdToken();
 
@@ -114,6 +115,7 @@ const SignIn = () => {
       navigate('/all', { replace: true });
     } catch (error) {
       console.error('Google sign-in error:', error);
+
       if (
         error.code !== 'auth/popup-closed-by-user' &&
         error.code !== 'auth/cancelled-popup-request'
@@ -210,7 +212,7 @@ const SignIn = () => {
           </div>
         </fieldset>
         <button
-          className="button-gradient mt-2 flex cursor-pointer items-center justify-center rounded-[5px] py-4.5 dark:text-black"
+          className="button-gradient tablet:max-h-[62px] mt-2 flex max-h-[50px] cursor-pointer items-center justify-center rounded-[5px] py-4.5 dark:text-black"
           type="submit">
           {isLoading ? <ClipLoader color="#fff" size={24} /> : 'Sign In'}
         </button>
@@ -221,7 +223,7 @@ const SignIn = () => {
       <div className="mx-auto max-w-[300px]">
         <button
           onClick={handleGoogleSignIn}
-          className="darkborder-gray-300 flex w-full cursor-pointer items-center justify-center gap-3 rounded-[5px] border border-black py-3.5 hover:bg-gray-100 dark:border-gray-700 dark:hover:bg-gray-700"
+          className="darkborder-gray-300 tablet:max-h-[62px] flex max-h-[50px] w-full cursor-pointer items-center justify-center gap-3 rounded-[5px] border border-black py-3.5 hover:bg-gray-100 dark:border-gray-700 dark:hover:bg-gray-700"
           type="button">
           {isGoogleSignInLoading ? (
             <GoogleSpinner />

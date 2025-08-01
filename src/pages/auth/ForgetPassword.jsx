@@ -81,7 +81,7 @@ const ForgetPassword = () => {
             <div className="relative">
               <fieldset
                 className={`${!email ? 'border-light-grayish-blue' : isEmailFieldFocused ? 'border-light-grayish-blue' : isEmailValid ? 'border-light-grayish-blue' : 'border-error-red'} flex flex-col rounded-[5px] border-1`}>
-                <legend htmlFor="email" className=" legend-base">
+                <legend htmlFor="email" className="legend-base">
                   Email Address
                 </legend>
                 <input
@@ -111,7 +111,7 @@ const ForgetPassword = () => {
             </div>
 
             <button
-              className="button-gradient mt-8 flex w-full cursor-pointer items-center justify-center rounded-[5px] py-4.5 outline-none dark:text-black"
+              className="button-gradient tablet:max-h-[62px] mt-8 flex max-h-[50px] w-full cursor-pointer items-center justify-center rounded-[5px] py-4.5 outline-none dark:text-black"
               type="submit">
               {isLoading ? (
                 <ClipLoader color="#fff" size={24} />

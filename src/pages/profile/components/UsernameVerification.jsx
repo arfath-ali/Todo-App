@@ -43,7 +43,7 @@ const UsernameVerification = ({
   };
 
   return (
-    <div className="mx-auto rounded-[5px] bg-white px-4 py-5 dark:bg-gray-800">
+    <div className="tablet:mx-auto mx-4 rounded-[5px] bg-white px-4 py-5 dark:bg-gray-800">
       <div>
         <h1 className="text-20 mb-8 flex gap-2 font-bold">
           Confirm your username
@@ -53,7 +53,7 @@ const UsernameVerification = ({
       </div>
 
       <div className="mt-4 flex items-center">
-        <fieldset className="border-light-grayish-blue desktop:max-w-[300px] flex max-w-[200px] flex-grow flex-col rounded-[5px] border-1">
+        <fieldset className="tablet:max-w-[300px] flex max-w-[200px] flex-grow flex-col rounded-[5px] border-1">
           <legend htmlFor="username" className="mb-1 ml-3"></legend>
 
           <input
@@ -70,7 +70,9 @@ const UsernameVerification = ({
           />
         </fieldset>
         {usernameStatus && (
-          <p className="text-error mt-1 ml-2">{usernameStatus}!</p>
+          <p className="text-error mobileLarge:max-w-none mt-1 ml-2 max-w-[50px]">
+            {usernameStatus}!
+          </p>
         )}
       </div>
 
@@ -84,7 +86,7 @@ const UsernameVerification = ({
           Cancel
         </button>
         <button
-          className={`deleteAccount-button-gradient desktop:max-h-[42px] desktop:min-w-[255px] max-h-[38px] min-w-[163px] flex-grow cursor-pointer rounded-[5px] p-3 ${username.length >= 3 ? '' : 'opacity-55'}`}
+          className={`deleteAccount-button-gradient tablet:max-h-[42px] tablet:min-w-[255px] max-h-[38px] min-w-[163px] flex-grow cursor-pointer rounded-[5px] p-3 ${username.length >= 3 ? '' : 'opacity-55'}`}
           onClick={() => {
             if (!username) return;
             handleProceedButton();

@@ -170,11 +170,13 @@
         background-image: var(--color-gradient-signout);
     }
 
-    .profile-picture-upload-menu {
+    .profile-picture-upload-menu,
+    .image-crop-modal {
         background-image: var(--color-gradient-bg-pp-upload-menu);
     }
 
-    .dark .profile-picture-upload-menu {
+    .dark .profile-picture-upload-menu,
+    .dark .image-crop-modal {
         background-image: var(--color-gradient-bg-pp-upload-menu-dark);
     }
 

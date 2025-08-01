@@ -354,23 +354,23 @@ const Profile = () => {
             </div>
 
             {hasChanges && isUsernameAvailable && (
-              <div className="text-success desktop:mb-2 absolute top-[-25px] bottom-[100%] mx-auto w-full text-center">
+              <div className="text-success tablet:mb-2 absolute top-[-25px] bottom-[100%] mx-auto w-full text-center">
                 <p>{usernameStatus}</p>
               </div>
             )}
             {hasChanges && !isUsernameAvailable && (
-              <div className="text-error desktop:mb-2 absolute top-[-25px] bottom-[100%] mx-auto w-full text-center">
+              <div className="text-error tablet:mb-2 absolute top-[-25px] bottom-[100%] mx-auto w-full text-center">
                 <p>{usernameStatus}</p>
               </div>
             )}
 
             {updateStatus && changesSaved ? (
-              <div className="text-success desktop:mb-2 absolute top-[-25px] bottom-[100%] mx-auto w-full text-center">
+              <div className="text-success tablet:mb-2 absolute top-[-25px] bottom-[100%] mx-auto w-full text-center">
                 <p>{updateStatus}</p>
               </div>
             ) : (
               updateStatus && (
-                <div className="text-error desktop:mb-2 absolute top-[-25px] bottom-[100%] mx-auto w-full text-center">
+                <div className="text-error tablet:mb-2 absolute top-[-25px] bottom-[100%] mx-auto w-full text-center">
                   <p>{updateStatus}</p>
                 </div>
               )
@@ -478,8 +478,17 @@ const Profile = () => {
             {!isEditable && (
               <div
                 onClick={() => handleEditProfileButton()}
-                className={`absolute top-0 cursor-pointer ${windowWidth > 768 ? 'right-[-100px]' : 'right-[-30px]'} rounded-[100px] p-[2px]`}
-                style={{ background: 'var(--color-gradient-button)' }}>
+                className={`absolute top-0 cursor-pointer rounded-[100px] p-[2px]`}
+                style={{
+                  background: 'var(--color-gradient-button)',
+                  right:
+                    windowWidth < 375
+                      ? '-10px'
+                      : windowWidth > 768
+                        ? '-100px'
+                        : '-30px',
+                }}>
+                {' '}
                 {windowWidth >= 768 ? (
                   <button className="flex cursor-pointer justify-center gap-2 rounded-[100px] bg-gray-300 px-2 pt-3 pb-2 font-bold hover:bg-gray-400 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700">
                     Edit Profile
@@ -513,7 +522,7 @@ const Profile = () => {
                 Cancel
               </button>
               <button
-                className={`save-button-gradient desktop:max-h-[42px] max-h-[38px] flex-1 cursor-pointer rounded-[5px] py-3 ${hasChanges && (!usernameChanged || (profileUsername && isUsernameAvailable)) && (!fullNameChanged || fullName) ? '' : 'opacity-20'}`}
+                className={`save-button-gradient tablet:max-h-[42px] flex max-h-[38px] flex-1 cursor-pointer items-center justify-center rounded-[5px] py-3 ${hasChanges && (!usernameChanged || (profileUsername && isUsernameAvailable)) && (!fullNameChanged || fullName) ? '' : 'opacity-20'}`}
                 onClick={() => {
                   setIsLoading(true);
 
@@ -539,7 +548,7 @@ const Profile = () => {
                     setIsSignedOut(false);
                   }, 1000);
                 }}
-                className="signOut-button-gradient mt-10 flex w-full cursor-pointer items-center justify-center gap-2.5 rounded-[5px] py-4 font-bold dark:text-black">
+                className="signOut-button-gradient mt-10 flex max-h-[52px] w-full cursor-pointer items-center justify-center gap-2.5 rounded-[5px] py-4 font-bold dark:text-black">
                 {isSignedOut ? (
                   <ClipLoader color="#fff" size={24} />
                 ) : (
@@ -558,7 +567,7 @@ const Profile = () => {
                 onClick={() => {
                   setDeleteConfirmation(true);
                 }}
-                className="deleteAccount-button-gradient mt-4 flex w-full cursor-pointer items-center justify-center gap-2.5 rounded-[5px] py-3.5 font-bold dark:text-black">
+                className="deleteAccount-button-gradient mt-4 flex max-h-[52px] w-full cursor-pointer items-center justify-center gap-2.5 rounded-[5px] py-3.5 font-bold dark:text-black">
                 <img
                   src={BinIcon}
                   className="hover-cursor-pointer mb-1 h-5 w-5"

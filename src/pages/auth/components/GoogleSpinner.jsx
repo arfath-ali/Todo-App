@@ -8,8 +8,8 @@ function GoogleSpinner() {
       `}</style>
       <div
         style={{
-          width: 28,
-          height: 28,
+          width: 24,
+          height: 24,
           borderRadius: '50%',
           border: '1.5px solid transparent',
           background: `

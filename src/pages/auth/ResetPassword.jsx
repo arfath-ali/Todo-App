@@ -233,7 +233,7 @@ const ResetPassword = () => {
                 )}
             </div>
 
-            <button className="button-gradient mt-10 flex w-full cursor-pointer items-center justify-center rounded-[5px] py-4.5 outline-none dark:text-black">
+            <button className="button-gradient tablet:max-h-[62px] mt-10 flex max-h-[50px] w-full cursor-pointer items-center justify-center rounded-[5px] py-4.5 outline-none dark:text-black">
               {isLoading ? (
                 <ClipLoader color="#fff" size={24} />
               ) : (

@@ -11,7 +11,7 @@ const DeleteAccountConfirmation = ({ setDeleteConfirmation }) => {
   const { theme } = useTheme();
   const [usernameAuthentication, setUsernameAuthentication] = useState(false);
   return (
-    <div className="mx-auto rounded-[5px] bg-white px-4 py-5 dark:bg-gray-800">
+    <div className="tablet:mx-auto mx-4 rounded-[5px] bg-white px-4 py-5 dark:bg-gray-800">
       <div>
         <h1 className="mb-8 flex items-center gap-2 font-bold">
           <img

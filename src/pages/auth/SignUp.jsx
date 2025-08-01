@@ -157,18 +157,18 @@ const SignUp = () => {
           handleSignUp(e);
         }}>
         {signUpError && (
-          <div className="text-error desktop:mb-2 absolute bottom-full mx-auto w-full text-center">
+          <div className="text-error tablet:mb-2 absolute bottom-full mx-auto mb-1.5 w-full text-center">
             <p>{signUpError}</p>
           </div>
         )}
 
         {usernameStatus &&
           (isUsernameAvailable ? (
-            <div className="text-success desktop:mb-3 absolute bottom-full mx-auto w-full text-center">
+            <div className="text-success tablet:mb-2 absolute bottom-full mx-auto mb-1.5 w-full text-center">
               <p>{usernameStatus}</p>
             </div>
           ) : (
-            <div className="text-error desktop:mb-3 absolute bottom-full mx-auto w-full text-center">
+            <div className="text-error tablet:mb-2 absolute bottom-full mx-auto mb-1.5 w-full text-center">
               <p>{usernameStatus}</p>
             </div>
           ))}
@@ -389,7 +389,7 @@ const SignUp = () => {
             )}
         </div>
 
-        <button className="button-gradient mt-2 flex cursor-pointer items-center justify-center rounded-[5px] py-4.5 dark:text-black">
+        <button className="button-gradient tablet:max-h-[62px] mt-2 flex max-h-[50px] cursor-pointer items-center justify-center rounded-[5px] py-4.5 dark:text-black">
           {isSubmittingSignUp ? (
             <ClipLoader color="#fff" size={24} />
           ) : (
