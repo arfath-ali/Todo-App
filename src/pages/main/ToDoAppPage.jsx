@@ -1,7 +1,8 @@
-import { Suspense, lazy } from 'react';
+import { useEffect, useRef, Suspense, lazy } from 'react';
 import { useTheme } from '/src/context/ThemeContext';
 import { useTodosByPath } from '/src/context/TodosByPathContext';
 import { useWindowSize } from '/src/hooks/useWindowSize';
+import { useScrollPosition } from '/src/hooks/useScrollPosition';
 
 const WelcomeHeader = lazy(
   () => import('./components/header/WelcomeHeader.jsx'),
@@ -28,6 +29,10 @@ const TodoAppPage = () => {
     currentPath === 'all' ||
     currentPath === 'active' ||
     currentPath === 'completed';
+
+  const scrollRef = useRef();
+
+  useScrollPosition(scrollRef, currentPath);
 
   return (
     <div className="font-josefinSans font-weight-regular bg-white text-black dark:bg-gray-900 dark:text-gray-400">
@@ -81,19 +86,12 @@ const TodoAppPage = () => {
             )}
 
             <div
+              ref={scrollRef}
               className={`todo-list-container ${
                 displayTodos.length < 0
                   ? 'shadow-custom-light dark:shadow-custom-dark'
                   : ''
-              } rounded-[5px] ${
-                windowWidth >= 768
-                  ? currentPath === 'all'
-                    ? 'mt-2'
-                    : 'mt-21'
-                  : currentPath === 'all'
-                    ? 'mt-4'
-                    : 'mt-16'
-              } overflow-y-scroll`}>
+              } mt-2 overflow-y-scroll rounded-[5px]`}>
               <Suspense fallback={null}>
                 <TodoAppRoutes />
               </Suspense>
