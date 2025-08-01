@@ -73,7 +73,7 @@ const TodoAppPage = () => {
             )}
 
             <div
-              className={`${displayTodos.length !== 0 ? 'shadow-custom-light dark:shadow-custom-dark' : ''} overflow-y-scroll rounded-[5px] ${
+              className={`todo-list-container ${displayTodos.length <= 0 ? 'shadow-custom-light dark:shadow-custom-dark' : ''} overflow-y-scroll rounded-[5px] ${
                 windowWidth >= 768
                   ? currentPath === 'all'
                     ? 'mt-2'
@@ -81,7 +81,7 @@ const TodoAppPage = () => {
                   : currentPath === 'all'
                     ? 'mt-4'
                     : 'mt-16'
-              } tablet:max-h-[65vh] tablet:mt-4 mobile:max-h-[64vh] max-h-[61.5vh]`}>
+              } desktop:max-h-[62dvh] mb-2`}>
               <Suspense fallback={null}>
                 <TodoAppRoutes />
               </Suspense>

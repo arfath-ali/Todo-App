@@ -46,7 +46,7 @@ const CreateTodoItem = ({
               />
             )}
             <div
-              className="radio-btn tablet:h-6 tablet:w-6 box-border flex h-5 w-5 cursor-pointer items-center justify-center rounded-full border-1 border-gray-300 dark:border-gray-700"
+              className="radio-btn tablet:h-6 tablet:w-6 flex h-5 w-5 flex-shrink-0 cursor-pointer items-center justify-center rounded-full border-1 border-gray-300 dark:border-gray-700"
               style={
                 isChecked
                   ? {
@@ -61,7 +61,7 @@ const CreateTodoItem = ({
             </div>
 
             <p
-              className={` ${
+              className={`mobileLarge:max-w-[16rem] desktop:max-w-[25rem] mobile:max-w-[13rem] max-w-[9rem] break-words [@media(min-width:500px)]:max-w-[21rem] ${
                 theme === 'dark'
                   ? isChecked
                     ? 'text-gray-600 line-through'

@@ -252,4 +252,45 @@
     .app-text-small {
         @apply text-12 tracking-negative-19 tablet:text-14 tablet:tracking-negative-25 tablet:leading-14 leading-12
     }
+
+    .todo-list-container {
+        max-height: 62dvh;
+    }
+
+    @media (max-height: 1000px) {
+        .todo-list-container {
+            max-height: 69dvh;
+        }
+    }
+
+    @media (max-height: 900px) {
+        .todo-list-container {
+            max-height: 65dvh;
+        }
+    }
+
+    @media (max-height: 800px) {
+        .todo-list-container {
+            max-height: 62dvh;
+        }
+    }
+
+    @media (max-height: 700px) {
+        .todo-list-container {
+            max-height: 55dvh;
+        }
+    }
+
+    @media (max-height: 600px) {
+        .todo-list-container {
+            max-height: 50dvh;
+        }
+    }
+
+    @media (max-height: 500px) {
+        .todo-list-container {
+            max-height: 40dvh;
+        }
+    }
+
 }
