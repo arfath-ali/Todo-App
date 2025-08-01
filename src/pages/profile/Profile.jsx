@@ -334,7 +334,9 @@ const Profile = () => {
                   }
                   className="h-full"
                   alt="Profile Picture"
-                  onMouseEnter={() => setIsProfilePictureHovered(true)}
+                  onMouseEnter={() => {
+                    if (windowWidth >= 1440) setIsProfilePictureHovered(true);
+                  }}
                   onMouseLeave={() => setIsProfilePictureHovered(false)}
                   onClick={() => {
                     if (isEditable) setIsProfilePictureUploadMenu(true);
@@ -345,11 +347,12 @@ const Profile = () => {
                     <ClipLoader color="#fff" size={24} />
                   </div>
                 )}
-                {isEditable && isProfilePictureHovered && (
-                  <div className="pointer-events-none absolute bottom-0 flex h-[35%] w-full items-center justify-center rounded-b-full bg-black opacity-60">
-                    <img src={CameraIcon} className="h-6 w-6" />
-                  </div>
-                )}
+                {isEditable &&
+                  (windowWidth < 1440 || isProfilePictureHovered) && (
+                    <div className="pointer-events-none absolute bottom-0 flex h-[35%] w-full items-center justify-center rounded-b-full bg-black opacity-60">
+                      <img src={CameraIcon} className="h-6 w-6" />
+                    </div>
+                  )}
               </div>
             </div>
 
