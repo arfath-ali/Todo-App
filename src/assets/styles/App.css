@@ -263,6 +263,12 @@
         }
     }
 
+    @media (max-height: 725px) {
+        .todo-list-container {
+            max-height: 58dvh;
+        }
+    }
+
     @media (max-height: 700px) {
         .todo-list-container {
             max-height: 55dvh;
