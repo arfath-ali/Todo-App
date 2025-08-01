@@ -81,7 +81,7 @@ const TodoAppPage = () => {
             )}
 
             <div
-              className={`${
+              className={`todo-list-container ${
                 displayTodos.length < 0
                   ? 'shadow-custom-light dark:shadow-custom-dark'
                   : ''
@@ -93,7 +93,7 @@ const TodoAppPage = () => {
                   : currentPath === 'all'
                     ? 'mt-4'
                     : 'mt-16'
-              } desktop:max-h-[61.5dvh] max-h-[55dvh] overflow-y-scroll`}>
+              } overflow-y-scroll`}>
               <Suspense fallback={null}>
                 <TodoAppRoutes />
               </Suspense>
