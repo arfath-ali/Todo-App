@@ -79,7 +79,8 @@ const SignUp = () => {
     setSignUpError('');
     setEmail(emailInput.toLowerCase());
 
-    const regex = /^[A-Za-z0-9]+@[^\s@]+\.[^\s@]+$/;
+    const regex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+
     const emailValidity = regex.test(emailInput);
 
     setIsEmailValid(emailValidity);
